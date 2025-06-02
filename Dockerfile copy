@@ -1,0 +1,7 @@
+FROM nextcloud:latest
+
+COPY ContentSecurityPolicy.php /var/www/html/lib/public/AppFramework/Http/ContentSecurityPolicy.php
+COPY OC_Response.php /var/www/html/lib/private/legacy/OC_Response.php
+COPY ApiController.php /var/www/html/lib/public/AppFramework/ApiController.php
+COPY CORSMiddleware.php /var/www/html/lib/private/AppFramework/Middleware/Security/CORSMiddleware.php
+COPY proxy.php /var/www/html/custom_apps/richdocumentscode/proxy.php

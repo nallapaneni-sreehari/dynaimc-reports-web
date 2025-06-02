@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  nextcloud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextcloud
+    ports:
+      - "8082:80"
+    volumes:
+      - nc_data:/var/www/html
+    networks:
+      - collabonet
+
+  collabora:
+    image: collabora/code
+    container_name: collabora
+    ports:
+      - "9980:9980"
+    environment:
+      - domain=nextcloud  # IMPORTANT: must match internal hostname, not external IP
+      - extra_params=--o:ssl.enable=false
+    cap_add:
+      - MKNOD
+    networks:
+      - collabonet
+
+volumes:
+  nc_data:
+
+networks:
+  collabonet:
+    driver: bridge

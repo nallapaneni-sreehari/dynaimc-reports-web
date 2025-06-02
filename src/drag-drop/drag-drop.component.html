@@ -1,0 +1,72 @@
+<!-- <div class="container grid grid-cols-12 gap-4 px-5 top-[5%] fixed">
+    <div class="container col-span-10">
+        <h2>To do</h2>
+    
+        <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" [cdkDropListConnectedTo]="[doneList]"
+            class="example-list p-10 h-[calc(100vh-200px)]" (cdkDropListDropped)="drop($event)">
+            @for (item of todo; track item) {
+            <div class="example-box-moving" cdkDragBoundary=".example-list" cdkDrag>
+                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                {{item}}
+            </div>
+            }
+        </div>
+    </div>
+    
+    <div class="container col-span-2 pr-5">
+        <h2>Done</h2>
+    
+        <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
+            class="example-list" (cdkDropListDropped)="drop($event)">
+            @for (item of done; track item) {
+            <div class="example-box" cdkDrag>{{item}}</div>
+            }
+        </div>
+    </div>
+</div> -->
+
+<div class="w-[100%] grid grid-cols-12 gap-4 px-5 top-[10%] fixed">
+    <div class="container col-span-10 pr-5">
+        <h2>Invoice Layout</h2>
+
+
+        <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
+            class="example-list h-[calc(100vh-200px)] p-2" (cdkDropListDropped)="drop($event)">
+
+            <section id="drag-area" class="flex h-[100%] overflow-auto container">
+                <div *ngFor="let item of done; let i=index">
+                    <div id="{{i}}" class="example-box-moving" (click)="resizable=[];resizable[i]=true;" #targetRef>
+                        <div class="flex justify-center items-center">
+                            <span class="absolute top-0">{{ item.name }}</span>
+                            <div *ngIf="resizable[i]" class="flex absolute top-0 right-0">
+                                <ng-icon name="heroTrash"></ng-icon>
+                            </div>
+                        </div>
+                    </div>
+                    <ngx-moveable #moveableRef [resizable]="false" [target]="targetRef"
+                        [draggable]="draggable"  
+                        [scalable]="resizable[i]"
+                        [snappable]="snappable"
+                        [bounds]="bounds"
+                        (drag)="onDrag($event)" 
+                        (scale)="onScale($event)"
+                        (bound)="onBound($event)">
+                    </ngx-moveable>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="container col-span-2">
+        <h2>Widgets</h2>
+
+        <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" [cdkDropListConnectedTo]="[doneList]"
+            class="example-list h-[calc(100vh-200px)] p-2 !flex flex-col gap-2" (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let item of todo" class="border border-gray-400 px-4 py-4 rounded-md cursor-move" cdkDrag>
+                <div>{{ item.name }}</div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
