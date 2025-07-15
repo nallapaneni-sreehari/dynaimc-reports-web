@@ -1,24 +1,28 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from '../home/home.component';
-import { CanvasEditorComponent } from '../canvas-editor/canvas-editor.component';
-import { ReportEditorComponent } from '../report-editor/report-editor.component';
-import { OnlyofficeSuitComponent } from '../onlyoffice-suit/onlyoffice-suit.component';
+import { LoginComponent } from './login/login.component';
+import { TemplatesComponent } from './templates/templates.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ReportsComponent } from './reports/reports.component';
+import { AuthGaurd } from './gaurds/auth.guard';
 
 export const routes: Routes = [
     {
         path: '',
-        component: HomeComponent
+        component: LoginComponent
     },
     {
-        path: 'canva',
-        component: CanvasEditorComponent
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [AuthGaurd]
     },
     {
         path: 'reports',
-        component: ReportEditorComponent
+        component: ReportsComponent,
+        canActivate: [AuthGaurd]
     },
     {
-        path: 'office',
-        component: OnlyofficeSuitComponent
+        path: 'templates',
+        component: TemplatesComponent,
+        canActivate: [AuthGaurd]
     },
 ];

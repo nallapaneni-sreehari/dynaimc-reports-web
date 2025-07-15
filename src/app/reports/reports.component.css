@@ -1,0 +1,65 @@
+::ng-deep .p-tabpanels {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+:ng-deep .p-splitterpanel-nested {
+  justify-content: start !important;
+}
+
+:root {
+  /* Optional: globally redefine selection or focus colors */
+  --jsoneditor-selection-color: theme('colors.emerald.500');
+  /* for Tailwind users */
+}
+
+::ng-deep .jsoneditor {
+  border: 1px solid #10b981;
+  /* emerald-500 border */
+  font-family: 'Inter', sans-serif;
+}
+
+::ng-deep .jsoneditor-menu {
+  background: #10b981 !important;
+  /* emerald-500 background */
+  color: white;
+  border-bottom: 1px solid #10b981;
+}
+
+::ng-deep .jsoneditor .jsoneditor-selected {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+  /* emerald-500 with opacity */
+}
+
+::ng-deep .jsoneditor-field,
+::ng-deep .jsoneditor-value {
+  color: #1f2937 !important;
+  /* Gray-800 for better readability */
+}
+
+::ng-deep .jsoneditor-navigation-bar {
+  background: #10b981 !important;
+  color: white;
+}
+
+::ng-deep .jsoneditor-statusbar {
+  background: #d1fae5 !important;
+  /* emerald-100 */
+  color: #065f46;
+}
+
+::ng-deep #angjsoneditor160106 {
+  width: 100% !important;
+}
+
+json-editor div {
+  height: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+.docx-preview {
+  height: 100%;
+  overflow-y: auto;
+  /* or min-height large enough */
+}

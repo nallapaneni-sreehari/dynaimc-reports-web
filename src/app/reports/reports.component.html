@@ -1,0 +1,118 @@
+<!-- reports.component.html -->
+<div class="p-4">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-semibold text-gray-800">Reports</h2>
+    <div class="flex justify-between gap-2 items-center">
+      <p-button type="button" label="Integrate with API" icon="pi pi-code" severity="info" />
+      <p-button type="button" label="Generate Report" icon="pi pi-plus" (click)="openGenerateDialog()" />
+    </div>
+  </div>
+
+  <p-tabView [(activeIndex)]="selectedTabIndex" (onChange)="onTabChange($event)">
+    <p-tabPanel header="All"></p-tabPanel>
+    <p-tabPanel header="Completed"></p-tabPanel>
+    <p-tabPanel header="Failed"></p-tabPanel>
+  </p-tabView>
+
+  <ag-grid-angular class="ag-theme-alpine" style="width: 100%; height: 500px;" [rowData]="filteredReports"
+    [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [pagination]="true">
+  </ag-grid-angular>
+
+  <p-dialog styleClass="!w-full !mx-5 !h-full" header="Generate New Report" [(visible)]="showGenerateDialog"
+    [modal]="true" class="!w-full">
+    <div class="h-full w-full">
+      <p-splitter [panelSizes]="splitOrientation === 'horizontal' ? [40, 60] : [50, 50]"
+        [styleClass]="splitOrientation === 'horizontal' ? 'mb-8 h-full' : 'mb-8 h-[calc(100vh-120px)]'"
+        [layout]="splitOrientation">
+
+        <!-- Create UI Panel -->
+        <ng-template #panel>
+          <div class="h-full w-full flex items-start justify-start px-4 py-1 overflow-hidden">
+            <div class="p-fluid gap-4 w-full">
+              <!-- Template Selection -->
+              <div class="field flex flex-col justify-start">
+                <label for="template">Template</label>
+                <div class="flex flex-row justify-between items-center w-full">
+                  <p-dropdown [loading]="isTemplatesLoading" class="!w-3/4" id="template" [options]="templateOptions"
+                    [(ngModel)]="selectedTemplate" placeholder="Select Template" [filter]="true"
+                    (onChange)="preview()"></p-dropdown>
+                  <p-button outlined text label="Edit Template" icon="pi pi-external-link" class="ml-2 flex justify-end items-center
+                  " (click)="editTemplate()"></p-button>
+                </div>
+              </div>
+
+              <!-- Data Input Tabs -->
+              <p-tabView class="mt-4 h-full">
+                <p-tabPanel headerStyleClass="!pl-0" header="Paste JSON" class="!pl-0">
+                  <code for="jsonData">Paste your sample JSON Data</code>
+                  <!-- <div id="editorContainer" #editorContainer style="height: 400px;"></div> -->
+
+                  <!-- Parent container with fixed height -->
+                  <form [formGroup]="form" class="h-[400px]">
+                    <!-- Force json-editor to take full height -->
+                    <json-editor class="!h-full" [options]="editorOptions" (change)="changeLog($event)"
+                      [data]="jsonData" #jsonEditor formControlName="jsonData"></json-editor>
+                  </form>
+
+                  <!-- <textarea id="jsonData" rows="10" pInputTextarea [(ngModel)]="jsonData" class="w-full"></textarea> -->
+                </p-tabPanel>
+
+                <p-tabPanel headerStyleClass="!pl-0" header="Upload CSV" class="!pl-0">
+                  <label for="dataFile">Upload CSV</label>
+                  <p-fileUpload name="dataFile" customUpload [auto]="false" (uploadHandler)="handleCSVUpload($event)"
+                    accept=".csv" maxFileSize="1000000" chooseLabel="Choose CSV" uploadLabel="Upload"
+                    cancelLabel="Cancel"></p-fileUpload>
+                </p-tabPanel>
+              </p-tabView>
+
+              <!-- Generate Button -->
+              <button pButton type="button" label="Generate & Preview" icon="pi pi-check" class="p-button-primary my-2"
+                (click)="generateAndDownload()"></button>
+            </div>
+          </div>
+        </ng-template>
+
+        <!-- Preview Panel -->
+        <ng-template #panel>
+          <div class="relative h-full w-full overflow-auto p-4">
+
+            <div *ngIf="!showPreview">
+              Select a document and click preview to see the preview of selected template
+            </div>
+
+            <!-- <div #docxContainer class="origin-top-left" [style.transform]="'scale(' + zoom + ')'"
+              [style.transformOrigin]="'top left'" [style.width]="100 / zoom + '%'">
+              <div *ngIf="previewLoading" class="flex justify-center items-center">
+                <span class="text-2xl">
+                  Preview Loading...
+                </span>
+              </div>
+            </div> -->
+            <div *ngIf="iFrameUrl && !this.selectedTemplate?.includes('.pdf')" class="origin-top-left"
+              [style.transform]="'scale(' + zoom + ')'" [style.transformOrigin]="'top left'"
+              [style.width]="100 / zoom + '%'">
+              <iframe [src]="iFrameUrl" width="100%" height="700px" frameborder="0">
+              </iframe>
+            </div>
+
+            <div *ngIf="this.selectedTemplate?.includes('.pdf')" class="w-full overflow-hidden" style="height: 100vh;">
+              <div [style.transform]="'scale(' + zoom + ')'" style="transform-origin: top left;"
+                [style.width]="100 / zoom + '%'">
+                <iframe #pdfFrame id="pdfFrame" frameborder="0" class="w-full" style="height: 100vh;"></iframe>
+              </div>
+            </div>
+            <!-- Floating Zoom Controls -->
+            <div *ngIf="showPreview" class="fixed bottom-[3rem] right-[5rem] flex flex-col gap-2 z-10">
+              <button pButton icon="pi pi-search-plus" class="p-button-rounded p-button-sm p-button-secondary"
+                (click)="zoomIn()"></button>
+              <button pButton icon="pi pi-search-minus" class="p-button-rounded p-button-sm p-button-secondary"
+                (click)="zoomOut()"></button>
+              <button pButton icon="pi pi-refresh" class="p-button-rounded p-button-sm p-button-secondary"
+                (click)="resetZoom()"></button>
+            </div>
+          </div>
+        </ng-template>
+      </p-splitter>
+    </div>
+  </p-dialog>
+</div>

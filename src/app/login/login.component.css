@@ -1,0 +1,18 @@
+.typewriter-container h2 {
+  /* font-size: 1.8rem; */
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid orange;
+  width: fit-content;
+  animation: blink-caret 0.75s step-end infinite;
+}
+
+/* Blinking cursor */
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: orange;
+  }
+}

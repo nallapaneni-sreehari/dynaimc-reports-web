@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import "primeicons/primeicons.css";
+@import "jsoneditor/dist/jsoneditor.min.css";
 
 html,
 body {
@@ -9,6 +11,12 @@ body {
 * {
     font-family: "Urbanist", serif;
     margin: 0;
+}
+
+div[id^="angjsoneditor"] {
+  height: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box;
 }
 
 @tailwind base;

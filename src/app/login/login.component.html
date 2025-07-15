@@ -1,0 +1,51 @@
+<!-- <div class="flex flex-col justify-start items-center gap-4">
+    <button class="border border-gray-400 px-5 py-6 hover:bg-blue-500 transition duration-200" (click)="login()">
+        Login
+    </button>
+
+    <button class="border border-gray-400 px-5 py-6 hover:bg-red-500" (click)="logout()">Logout</button>
+
+    <pre *ngIf="auth.identityClaims">{{ auth.identityClaims | json }}</pre>
+</div> -->
+
+
+<div *ngIf="!auth?.isLoggedIn"
+    class="grid grid-cols-12 gap-4 grid-nogutter bg-surface-0 dark:bg-surface-950 text-surface-800 dark:text-surface-50">
+    <div class="col-span-12 md:col-span-6 p-12 text-center md:text-left flex items-center ">
+        <section class="">
+            <div class="typewriter-container !mb-2 ">
+                <h2 class="!py-2 !block !font-bold text-3xl xl:!text-5xl !text-primary-400">{{ displayText }}</h2>
+            </div>
+            <div class="w-full flex flex-col gap-6">
+                <div class="text-2xl lg:text-3xl text-primary font-semibold mb-4 !text-gray-600">Design Your report templates, and schedule
+                    the batches to Forge them</div>
+                <div class="border-l-8 border-emerald-600 bg-emerald-50 p-4 rounded-md shadow-sm mb-2">
+                    <div class="flex items-start space-x-3">
+                        <!-- <i class="pi pi-info-circle ext-xl mt-1"></i> -->
+                        <div>
+                            <p class="text-base font-semibold">
+                                Create and manage dynamic reports with ease.
+                            </p>
+                            <p class="text-sm">
+                                Import data, design templates, and generate polished PDFs instantly.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div>
+                    <p-button label="Get Started" severity="primary" type="button" class="mr-4" raised
+                        (click)="login()"></p-button>
+                    <p-button label="Learn More" type="button" outlined></p-button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="col-span-12 md:col-span-6 overflow-hidden">
+        <video controls class="md:ml-auto block md:h-full" style="clip-path: polygon(10% 0, 100% 0%, 100% 100%, 0 100%)" src="https://videos.pexels.com/video-files/5752729/5752729-uhd_2560_1440_30fps.mp4"></video>
+        <!-- <img src="https://apollo.primeng.org/demo/images/blocks/hero/hero-1.png" alt="Image"
+            class="md:ml-auto block md:h-full" style="clip-path: polygon(8% 0, 100% 0%, 100% 100%, 0 100%)"> -->
+    </div>
+</div>
