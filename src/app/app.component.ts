@@ -19,14 +19,39 @@ import { DrawerModule } from 'primeng/drawer';
 import { ToastModule } from 'primeng/toast';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { MenuModule } from 'primeng/menu';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatSidenavModule, MatButtonModule, MatToolbarModule, MatIconModule, FormsModule, ReactiveFormsModule, CommonModule, MatMenuModule, MatListModule, RouterModule, DrawerModule, Toolbar, AvatarModule, ButtonModule, ToastModule, NgxSpinnerModule, OverlayPanelModule],
+  imports: [RouterOutlet, MatSidenavModule, MatButtonModule, MatToolbarModule, MatIconModule, FormsModule, ReactiveFormsModule, CommonModule, MatMenuModule, MatListModule, RouterModule, DrawerModule, Toolbar, AvatarModule, ButtonModule, ToastModule, NgxSpinnerModule, OverlayPanelModule, MenuModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
+  mobileMenuItems: MenuItem[] = [
+    {
+      label: 'Dashboard',
+      icon: 'pi pi-home',
+      routerLink: '/dashboard'
+    },
+    {
+      label: 'Template Builder',
+      icon: 'pi pi-folder-open',
+      routerLink: '/templates'
+    },
+    {
+      label: 'Your Reports',
+      icon: 'pi pi-file-pdf',
+      routerLink: '/reports'
+    },
+    {
+      label: 'Settings',
+      icon: 'pi pi-cog',
+      routerLink: '/settings'
+    }
+  ];
+
+
   userImg = 'user.png';
 
   title = 'ReportsForge';

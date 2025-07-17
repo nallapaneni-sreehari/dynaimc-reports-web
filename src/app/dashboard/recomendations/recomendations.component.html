@@ -1,0 +1,74 @@
+<!-- Right Side Panel -->
+<div class="w-full top-[6.4rem] rounded-lg bottom-20 right-4 h-[80vh] w-1/4 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 shadow-lg flex flex-col z-50">
+
+    <!-- Header -->
+    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+            <i class="pi pi-bolt text-yellow-500"></i>
+            Recommended Actions
+        </h2>
+    </div>
+
+    <!-- Scrollable Actions -->
+    <div class="flex-1 overflow-y-auto p-4 space-y-5">
+
+        <!-- No Active Reports -->
+        <div class="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-400 shadow-sm">
+            <div class="flex items-start gap-3">
+                <i class="pi pi-chart-bar text-yellow-500 text-xl mt-1"></i>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800 dark:text-yellow-100">You have no active reports
+                        configured.</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Start generating insights now.</p>
+                    <p-button severity="warn" size="small" label="Create Report" icon="pi pi-plus-circle" class="w-full" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Expired Tokens -->
+        <div class="p-4 rounded-lg bg-red-50 dark:bg-red-900/30 border-l-4 border-red-400 shadow-sm">
+            <div class="flex items-start gap-3">
+                <i class="pi pi-key text-red-500 text-xl mt-1"></i>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800 dark:text-red-100">Access token has expired.</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Reconnect your account to continue using
+                        ReportsForge.</p>
+                    <p-button severity="danger" size="small" label="Create Report" icon="pi pi-sign-in" class="w-full" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Cleanup Data -->
+        <div class="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-400 shadow-sm">
+            <div class="flex items-start gap-3">
+                <i class="pi pi-database text-blue-500 text-xl mt-1"></i>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800 dark:text-blue-100">1.2GB unused data exports found.
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Free up space for better performance.</p>
+                    <p-button severity="info" size="small" label="Create Report" icon="pi pi-trash" class="w-full" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Analytics -->
+        <div class="p-4 rounded-lg bg-purple-50 dark:bg-purple-900/30 border-l-4 border-purple-400 shadow-sm">
+            <div class="flex items-start gap-3">
+                <i class="pi pi-clock text-purple-500 text-xl mt-1"></i>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800 dark:text-purple-100">Weekly analytics not
+                        scheduled.</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Enable scheduled reports to automate
+                        insights.</p>
+                    <p-button severity="help" size="small" label="Create Report" icon="pi calendar-plus" class="w-full" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+        <p-button styleClass="!w-full" severity="success" size="small" label="Mark All as Done" icon="pi pi pi-check" class="!w-full" />
+    </div>
+</div>

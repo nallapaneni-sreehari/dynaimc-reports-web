@@ -20,15 +20,24 @@
               </span>
             </a>
           </div>
-          <div *ngIf="auth?.isLoggedIn" class="hidden md:flex justify-center items-center">
+
+          <!-- Desktop Menu (hidden on small) -->
+          <div *ngIf="auth?.isLoggedIn" class="hidden md:flex gap-2 items-center">
             <p-button icon="pi pi-home" label="Dashboard" [routerLink]="['/dashboard']" text severity="primary" />
             <p-button icon="pi pi-folder-open" label="Template Builder" [routerLink]="['/templates']" text
               severity="primary" />
             <p-button icon="pi pi-file-pdf" label="Your Reports" [routerLink]="['/reports']" text severity="primary" />
             <p-button icon="pi pi-cog" label="Settings" [routerLink]="['/settings']" text severity="primary" />
           </div>
+
+          <!-- Mobile Menu Toggle (hidden on md and up) -->
+          <div class="md:hidden">
+            <p-button icon="pi pi-bars" text (click)="mobileMenu?.toggle($event)" />
+            <p-menu #mobileMenu [model]="mobileMenuItems" popup />
+          </div>
         </div>
       </ng-template>
+
 
       <ng-template #end>
         <div *ngIf="userInfo?.email" class="flex gap-2 items-center">
@@ -46,7 +55,7 @@
               [ngStyle]="{ 'width': '45px', 'height': '45px' }">
             </p-avatar>
 
-            <div class="flex flex-col justify-start items-start">
+            <div class="hidden md:flex flex-col justify-start items-start">
               <span>{{userInfo?.name}}</span>
               <span>{{userInfo?.email}}</span>
             </div>
@@ -61,9 +70,9 @@
       <router-outlet></router-outlet>
     </section>
   </div>
-  
+
   <!-- Footer -->
-  <mat-toolbar *ngIf="auth?.isLoggedIn" class="main footer">
+  <mat-toolbar *ngIf="auth?.isLoggedIn" class="main footer !bg-white !dark:bg-black">
     <div class="flex justify-between items-center w-full">
       <span>Made for You - Reportsforge</span>
       <span>© 2025 Reportsforge</span>

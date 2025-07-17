@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
+import { RecomendationsComponent } from './recomendations/recomendations.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, PanelModule, ButtonModule],
+  imports: [CommonModule, PanelModule, ButtonModule, RecomendationsComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
