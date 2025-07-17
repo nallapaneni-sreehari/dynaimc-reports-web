@@ -5,11 +5,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { LoginService } from '../../services/login.service';
 import { DialogModule } from 'primeng/dialog';
 import { environment } from '../../environments/environment';
+import { ButtonModule } from 'primeng/button';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-templates',
   standalone: true,
-  imports: [CommonModule, DialogModule],
+  imports: [CommonModule, DialogModule, ButtonModule],
   templateUrl: './templates.component.html',
   styleUrl: './templates.component.css'
 })
@@ -23,7 +25,7 @@ export class TemplatesComponent {
     return `${environment.host}/index.php/apps/files/files/${fileId}?dir=/&openfile=true`
   };
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(private sanitizer: DomSanitizer, private toast: ToastService) {
 
   }
 
@@ -71,5 +73,45 @@ export class TemplatesComponent {
   ngOnDestroy() {
     this.embedUrl = '';
     localStorage.setItem('openTemplate', 'null');
+  }
+
+  copied = false;
+  copyToClipboard() {
+    const user: any = localStorage.getItem('user');
+    const email = JSON.parse(user)?.email;
+    this.copied = true;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(email).then(() => {
+        console.log('Text copied to clipboard');
+        // Optional: Show success toast/snackbar
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+    } else {
+      // Fallback for older browsers
+      this.fallbackCopyText(email);
+    }
+    // Reset icon after 1.5 seconds
+    setTimeout(() => {
+      this.copied = false;
+    }, 1500);
+    
+    this.toast.success('Copied!', 'Email and password copied to clipboard');
+  }
+
+  fallbackCopyText(text: string) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';  // avoid scrolling to bottom
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      console.log('Fallback: Text copied');
+    } catch (err) {
+      console.error('Fallback: Failed to copy', err);
+    }
+    document.body.removeChild(textarea);
   }
 }
