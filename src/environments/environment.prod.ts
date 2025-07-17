@@ -1,8 +1,8 @@
-// environment.prod.ts (production)
+// environment.ts (development)
 export const environment = {
   production: true,
-  apiUrl: 'https://smoothly-legible-weevil.ngrok-free.app/reportsforgeapi',
-  redirectUri: 'https://smoothly-legible-weevil.ngrok-free.app/reportsforge/',
-  host: 'https://smoothly-legible-weevil.ngrok-free.app',
-  proxy: 'https://smoothly-legible-weevil.ngrok-free.app/reportsforgeapi/api/v1/nextcloud/nextcloud-proxy/prod'
+  apiUrl: 'https://reportsforge.duckdns.org',
+  redirectUri: 'https://reportsforge.duckdns.org',
+  host: 'https://nextcloud-reportsforge.duckdns.org',
+  proxy: 'https://reportsforge.duckdns.org/api/v1/nextcloud/nextcloud-proxy/dev'
 };

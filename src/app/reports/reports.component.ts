@@ -186,7 +186,7 @@ export class ReportsComponent implements OnInit {
 
     const encodedUrl = btoa(fileUrl); // Base64 encode
     const encodedUsername = encodeURIComponent(email); // Just URL encode
-    const livePreview = 'https://smoothly-legible-weevil.ngrok-free.app/reportsforgeapi';
+    const livePreview = environment?.apiUrl;
 
     const finalUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${livePreview}/api/v1/nextcloud/files/live/${encodedUrl}/${encodedUsername}`;
 

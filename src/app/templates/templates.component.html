@@ -1,7 +1,9 @@
 <section class="w-full h-full rounded-sm">
     <!-- <h1>NextCloud Dashboard</h1> -->
     <!-- <iframe src="http://192.168.246.1:8081/" frameborder="0"></iframe> -->
-    <iframe *ngIf="embedUrl" class="rounded-sm" #nextcloudFrame class="w-full h-full" [src]="embedUrl" frameborder="0"></iframe>
+    <iframe *ngIf="embedUrl" class="rounded-sm" #nextcloudFrame class="w-full h-full" [src]="embedUrl" frameborder="0"
+    
+    ></iframe>
 
     <p-dialog header="Template Builder" [(visible)]="showDialog" [style]="{width: '500px'}" [modal]="true">
         <div class="text-base leading-relaxed">

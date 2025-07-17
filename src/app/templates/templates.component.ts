@@ -27,20 +27,6 @@ export class TemplatesComponent {
 
   }
 
-
-  public config = {
-    document: {
-      fileType: "docx",
-      key: "Khirz6zTPdfd7",
-      title: "Example Document Title.docx",
-      url: "https://calibre-ebook.com/downloads/demos/demo.docx",
-    },
-    documentType: "word",
-    editorConfig: {
-      callbackUrl: "https://example.com/url-to-callback.ashx",
-    },
-  };
-
   ngOnInit(): void {
     // Directly open the template file if user selected edit template from reports page
     const getTemplateToOpen: any = localStorage.getItem('openTemplate');
