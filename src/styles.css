@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 @import "primeicons/primeicons.css";
 @import "jsoneditor/dist/jsoneditor.min.css";
+@import '../node_modules/ngx-spinner/animations/ball-spin-clockwise-fade.css';
 
 html,
 body {

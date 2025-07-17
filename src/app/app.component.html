@@ -1,5 +1,10 @@
 <div class="w-full min-h-screen">
   <p-toast />
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="ball-spin-clockwise-fade"
+    [fullScreen]="true">
+    <p class="text-white text-2xl"> Loading... </p>
+  </ngx-spinner>
+
   <!-- Main Content Area -->
   <div class="card main header z-50">
     <!-- <p-menubar [model]="items" /> -->
@@ -10,14 +15,15 @@
             <a href="#">
               <span class="flex flex-row justify-center items-center gap-1 font-bold tracking-wider">
                 <!-- <img src="../assets/logo2.png" alt="logo" height="40px"> -->
-                 <img src="logo_rf.png" alt="user_picture" class="w-12 h-6">
+                <img src="logo_rf.png" alt="user_picture" class="w-12 h-6">
                 <p class="hidden sm:block text-xl text-emerald-600">ReportsForge</p>
               </span>
             </a>
           </div>
           <div *ngIf="auth?.isLoggedIn" class="hidden md:flex justify-center items-center">
             <p-button icon="pi pi-home" label="Dashboard" [routerLink]="['/dashboard']" text severity="primary" />
-            <p-button icon="pi pi-folder-open" label="Template Builder" [routerLink]="['/templates']" text severity="primary" />
+            <p-button icon="pi pi-folder-open" label="Template Builder" [routerLink]="['/templates']" text
+              severity="primary" />
             <p-button icon="pi pi-file-pdf" label="Your Reports" [routerLink]="['/reports']" text severity="primary" />
             <p-button icon="pi pi-cog" label="Settings" [routerLink]="['/settings']" text severity="primary" />
           </div>
@@ -25,7 +31,8 @@
       </ng-template>
 
       <ng-template #end>
-        <p-button *ngIf="userInfo?.email" class="flex items-center gap-2" text plain (click)="drawerOpen=true" severity="primary">
+        <p-button *ngIf="userInfo?.email" class="flex items-center gap-2" text plain (click)="drawerOpen=true"
+          severity="primary">
           <p-avatar *ngIf="userInfo?.picture" size="large" [image]="userInfo.picture"
             [ngStyle]="{ 'width': '45px', 'height': '45px' }">
           </p-avatar>

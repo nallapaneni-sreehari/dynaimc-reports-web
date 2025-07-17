@@ -19,6 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { environment } from '../../environments/environment';
 import { ToastService } from '../../services/toast.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-reports',
@@ -40,7 +41,8 @@ export class ReportsComponent implements OnInit {
   constructor(
     private templateService: TemplateService,
     private reportService: ReportService,
-    private sanitize: DomSanitizer
+    private sanitize: DomSanitizer,
+    private spinner: NgxSpinnerService
   ) {
     this.editorOptions = new JsonEditorOptions()
     this.editorOptions.modes = ['text', 'tree', 'view'];
@@ -295,6 +297,7 @@ export class ReportsComponent implements OnInit {
   }
 
   generateAndDownload() {
+    this.spinner.show();
     const template: any = this.templatesData?.find((temp: any) => temp.name === this.selectedTemplate);
 
     const user: any = localStorage.getItem('user');
@@ -326,10 +329,12 @@ export class ReportsComponent implements OnInit {
           window.URL.revokeObjectURL(url);
         }, 100);
         this.showSuccess({ msg: 'Success', details: 'Report generated successfully' });
+        this.spinner.hide();
       },
       error: (err) => {
         console.error('Download failed:', err);
         this.showError({ msg: 'Failed', details: 'Report generation or download failed. Please try again.' });
+        this.spinner.hide();
       }
     });
   }
