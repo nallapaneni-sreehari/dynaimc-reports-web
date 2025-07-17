@@ -8,6 +8,9 @@ import { OAuthModule, provideOAuthClient } from 'angular-oauth2-oidc';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -21,6 +24,8 @@ export const appConfig: ApplicationConfig = {
             darkModeSelector: '.my-app-dark'
         }
       }
-    })
+    }),
+    importProvidersFrom(ToastModule),
+    MessageService,
   ]
 };

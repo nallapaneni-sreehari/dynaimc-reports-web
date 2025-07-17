@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import { ToastService } from '../../services/toast.service';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class LoginComponent {
         this.userInfo = await firstValueFrom(this.auth.loadUserInfo());
         console.info(`userInfo ::: token recieve`, this.userInfo);
         localStorage.setItem('user', JSON.stringify(this.userInfo));
+        this.showSuccess({msg: 'Success', details: `Welcome, ${this.userInfo?.name}`});
         
         this.loginService.login({ name: this.userInfo?.name, email: this.userInfo?.email }).subscribe({
           next: (data) => {
@@ -67,4 +69,13 @@ export class LoginComponent {
       setTimeout(() => this.typeWriter(), 60); // adjust speed here
     }
   }
+
+  public toast = inject(ToastService);
+  showSuccess({ msg, details }: any) {
+    this.toast.success(msg, details);
+  }
+  showError({ msg, details }: any) {
+    this.toast.success(msg, details);
+  }
+
 }

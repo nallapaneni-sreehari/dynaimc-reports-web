@@ -15,9 +15,11 @@
                 To access the builder, please log in using your application credentials:
             </p>
             <div class="mt-3 p-3 border-l-4 border-blue-600 bg-blue-50 rounded">
-                <p><code>username</code>: <em>Your registered email</em></p>
-                <p><code>password</code>: <em>Also your email</em></p>
+                <p><code>username & password</code>: <em>Your registered email</em></p>
+                <!-- <p><code>password</code>: <em>Also your email</em></p> -->
+                
             </div>
+            <p-button (click)="copyToClipboard()" styleClass="!pl-0 mt-1" label="Copy Email & Password" [text]="true" [icon]="copied ? 'pi pi-check' : 'pi pi-clone'" severity="success" />
             <!-- <ul class="mt-2 ml-3">
                 <li>
                     <code>username</code>: <em>Your registered email</em>

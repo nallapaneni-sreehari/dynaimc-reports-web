@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Inject, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
@@ -18,6 +18,7 @@ import JSONEditor, { JSONEditorOptions } from 'jsoneditor';
 import { DomSanitizer } from '@angular/platform-browser';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { environment } from '../../environments/environment';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-reports',
@@ -324,13 +325,21 @@ export class ReportsComponent implements OnInit {
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
         }, 100);
+        this.showSuccess({ msg: 'Success', details: 'Report generated successfully' });
       },
       error: (err) => {
         console.error('Download failed:', err);
-        alert('Report generation or download failed. Please try again.');
+        this.showError({ msg: 'Failed', details: 'Report generation or download failed. Please try again.' });
       }
     });
   }
 
+  public toast = inject(ToastService);
+  showSuccess({ msg, details }: any) {
+    this.toast.success(msg, details);
+  }
+  showError({ msg, details }: any) {
+    this.toast.success(msg, details);
+  }
 
 }

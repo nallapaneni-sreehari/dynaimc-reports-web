@@ -16,10 +16,12 @@ import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../services/auth.service';
 import { firstValueFrom } from 'rxjs';
 import { DrawerModule } from 'primeng/drawer';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatSidenavModule, MatButtonModule, MatToolbarModule, MatIconModule, FormsModule, ReactiveFormsModule, CommonModule, MatMenuModule, MatListModule, RouterModule, DrawerModule, Toolbar, AvatarModule, ButtonModule],
+  imports: [RouterOutlet, MatSidenavModule, MatButtonModule, MatToolbarModule, MatIconModule, FormsModule, ReactiveFormsModule, CommonModule, MatMenuModule, MatListModule, RouterModule, DrawerModule, Toolbar, AvatarModule, ButtonModule, ToastModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
