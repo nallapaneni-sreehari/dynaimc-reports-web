@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Setup SSH Agent
-        uses: webfactory/ssh-agent@v0.8.1
+        uses: uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
