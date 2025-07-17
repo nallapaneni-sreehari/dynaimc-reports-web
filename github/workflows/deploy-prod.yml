@@ -1,0 +1,40 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  deploy:
+    name: Deploy to Production Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.8.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy over SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            echo "✅ Starting deployment..."
+
+            echo "📥 Pulling latest frontend code"
+            cd /root/reportsforge/dynamic-reports-web
+            git pull origin prod
+
+            echo "📥 Pulling latest backend code"
+            cd /root/reportsforge/dynamic-reports-node
+            git pull origin prod
+
+            echo "🧹 Shutting down old containers"
+            cd /root/reportsforge
+            docker compose down --volumes --remove-orphans
+
+            echo "🔨 Rebuilding and restarting containers"
+            docker compose up --build --force-recreate -d
+
+            echo "🎉 Deployment finished!"
+          EOF
