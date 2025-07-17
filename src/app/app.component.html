@@ -31,18 +31,27 @@
       </ng-template>
 
       <ng-template #end>
-        <p-button *ngIf="userInfo?.email" class="flex items-center gap-2" text plain (click)="drawerOpen=true"
-          severity="primary">
-          <p-avatar *ngIf="userInfo?.picture" size="large" [image]="userInfo.picture"
-            [ngStyle]="{ 'width': '45px', 'height': '45px' }">
-          </p-avatar>
-
-          <div class="flex flex-col justify-start items-start">
-            <span>{{userInfo?.name}}</span>
-            <span>{{userInfo?.email}}</span>
+        <div *ngIf="userInfo?.email" class="flex gap-2 items-center">
+          <p-button (click)="toggleDarkMode()" [icon]="isDark ? 'pi pi-sun': 'pi pi-moon'" outlined text raised />
+          <!-- Notification Bell with Badge -->
+          <div class="relative inline-block">
+            <p-button icon="pi pi-bell" raised text (click)="op.toggle($event)" aria-label="Notifications" />
+            <span *ngIf="notifications.length > 0"
+              class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-gray-800">
+            </span>
           </div>
 
-        </p-button>
+          <p-button class="flex items-center gap-2" text plain (click)="drawerOpen=true" severity="primary">
+            <p-avatar *ngIf="userInfo?.picture" size="large" [image]="userInfo.picture" shape="circle"
+              [ngStyle]="{ 'width': '45px', 'height': '45px' }">
+            </p-avatar>
+
+            <div class="flex flex-col justify-start items-start">
+              <span>{{userInfo?.name}}</span>
+              <span>{{userInfo?.email}}</span>
+            </div>
+          </p-button>
+        </div>
       </ng-template>
     </p-toolbar>
   </div>
@@ -52,7 +61,7 @@
       <router-outlet></router-outlet>
     </section>
   </div>
-
+  
   <!-- Footer -->
   <mat-toolbar *ngIf="auth?.isLoggedIn" class="main footer">
     <div class="flex justify-between items-center w-full">
@@ -71,3 +80,52 @@
       (click)="logout(); drawerOpen=false"></p-button>
   </div>
 </p-drawer>
+
+
+<!-- Overlay Panel -->
+<p-overlayPanel #op [showCloseIcon]="true" styleClass="w-96 shadow-lg rounded-xl overflow-hidden dark:bg-gray-800">
+  <div class="p-4 space-y-4">
+
+    <!-- Welcome Header -->
+    <div class="flex items-center gap-3">
+      <i class="pi pi-inbox text-2xl text-blue-500"></i>
+      <div>
+        <div class="font-bold text-lg">Welcome back!</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400">Here are your recent notifications.</div>
+      </div>
+    </div>
+
+    <div *ngIf="notifications.length > 0; else noNotifs" class="space-y-3 max-h-80 overflow-y-auto">
+      <!-- Notification List -->
+      <div *ngFor="let notif of notifications; let i = index"
+        class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex justify-between items-start gap-3 bg-white dark:bg-gray-900">
+        <div class="flex items-start gap-3">
+          <i [ngClass]="notif.icon" class="text-xl text-primary-500 mt-1"></i>
+          <div>
+            <div class="font-semibold text-sm">{{ notif.title }}</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">{{ notif.time }}</div>
+            <div class="text-sm text-gray-700 dark:text-gray-300">{{ notif.message }}</div>
+          </div>
+        </div>
+        <button pButton type="button" icon="pi pi-times" text class="!p-0 !m-0" (click)="clearNotification(i)"
+          aria-label="Clear notification">
+        </button>
+      </div>
+    </div>
+
+    <!-- No Notifications -->
+    <ng-template #noNotifs>
+      <div class="text-center text-sm text-gray-500 dark:text-gray-400 py-4">
+        <i class="pi pi-check-circle text-green-500 text-xl block mb-2"></i>
+        You're all caught up!
+      </div>
+    </ng-template>
+
+    <!-- Clear All Button -->
+    <div *ngIf="notifications.length > 0" class="pt-2">
+      <button pButton label="Clear All" icon="pi pi-trash" class="w-full" severity="danger" (click)="clearAll()">
+      </button>
+    </div>
+
+  </div>
+</p-overlayPanel>

@@ -18,10 +18,11 @@ import { firstValueFrom } from 'rxjs';
 import { DrawerModule } from 'primeng/drawer';
 import { ToastModule } from 'primeng/toast';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatSidenavModule, MatButtonModule, MatToolbarModule, MatIconModule, FormsModule, ReactiveFormsModule, CommonModule, MatMenuModule, MatListModule, RouterModule, DrawerModule, Toolbar, AvatarModule, ButtonModule, ToastModule, NgxSpinnerModule],
+  imports: [RouterOutlet, MatSidenavModule, MatButtonModule, MatToolbarModule, MatIconModule, FormsModule, ReactiveFormsModule, CommonModule, MatMenuModule, MatListModule, RouterModule, DrawerModule, Toolbar, AvatarModule, ButtonModule, ToastModule, NgxSpinnerModule, OverlayPanelModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -57,6 +58,9 @@ export class AppComponent {
   }
 
   async ngOnInit() {
+    // Dark theme disable by default
+    this.toggleLightByDefault();
+
     this.oauthService.events.subscribe(async (e: OAuthEvent) => {
           if (e.type === 'token_received') {
             this.userInfo = await firstValueFrom(this.auth.loadUserInfo());
@@ -97,5 +101,46 @@ export class AppComponent {
     this.userInfo = null;
     this.auth.logout();
     this.router.navigate(['/'])
+  }
+
+  isDark = true;
+  toggleDarkMode() {
+    document.documentElement.classList.toggle('dark', this.isDark); // HTML element
+    document.documentElement.classList.toggle('app-dark', this.isDark); // App element
+    this.isDark = !this.isDark;
+  }
+
+  toggleLightByDefault() {
+    document.documentElement.classList.toggle('dark', false); // HTML element
+    document.documentElement.classList.toggle('app-dark', false); // App element
+  }
+
+  notifications = [
+    {
+      icon: 'pi pi-chart-line text-blue-400',
+      title: 'New Report',
+      time: '5 mins ago',
+      message: 'Your monthly sales report is ready.'
+    },
+    {
+      icon: 'pi pi-exclamation-triangle text-yellow-400',
+      title: 'System Alert',
+      time: '2 hours ago',
+      message: 'Disk usage is reaching 90%.'
+    },
+    {
+      icon: 'pi pi-bolt text-purple-400',
+      title: 'Promo Alert',
+      time: 'Yesterday',
+      message: 'Get 30% off on your next upgrade.'
+    }
+  ];
+
+  clearNotification(index: number) {
+    this.notifications.splice(index, 1);
+  }
+
+  clearAll() {
+    this.notifications = [];
   }
 }
