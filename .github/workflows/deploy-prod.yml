@@ -22,7 +22,7 @@ jobs:
             echo "✅ Starting deployment..."
 
             echo "📥 Pulling latest frontend code"
-            cd /root/reportsforge/dynamic-reports-web
+            cd /root/reportsforge/dynaimc-reports-web
             git pull origin prod
 
             echo "📥 Pulling latest backend code"
