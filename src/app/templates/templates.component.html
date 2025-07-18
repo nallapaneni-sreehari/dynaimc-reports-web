@@ -12,14 +12,14 @@
                 templates within your workspace.
             </p>
             <p class="mt-3">
-                To access the builder, please log in using your application credentials:
+                We attempt to log you in automatically. However, if that doesn't succeed, you can still access the builder manually. Please log in using your application credentials:
             </p>
-            <div class="mt-3 p-3 border-l-4 border-blue-600 bg-blue-50 rounded">
+            <div class="mt-3 p-3 border-l-4 border-blue-600 bg-blue-50 rounded dark:border-blue-50 dark:bg-blue-500">
                 <p><code>username & password</code>: <em>Your registered email</em></p>
                 <!-- <p><code>password</code>: <em>Also your email</em></p> -->
                 
             </div>
-            <p-button (click)="copyToClipboard()" styleClass="!pl-0 mt-1" label="Copy Email & Password" [text]="true" [icon]="copied ? 'pi pi-check' : 'pi pi-clone'" severity="success" />
+            <p-button (click)="copyToClipboard()" styleClass="!pl-0 mt-1" label="Copy Email / Password" [text]="true" [icon]="copied ? 'pi pi-check' : 'pi pi-clone'" severity="success" />
             <!-- <ul class="mt-2 ml-3">
                 <li>
                     <code>username</code>: <em>Your registered email</em>

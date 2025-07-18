@@ -7,6 +7,7 @@ import { DialogModule } from 'primeng/dialog';
 import { environment } from '../../environments/environment';
 import { ButtonModule } from 'primeng/button';
 import { ToastService } from '../../services/toast.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-templates',
@@ -25,7 +26,7 @@ export class TemplatesComponent {
     return `${environment.host}/index.php/apps/files/files/${fileId}?dir=/&openfile=true`
   };
 
-  constructor(private sanitizer: DomSanitizer, private toast: ToastService) {
+  constructor(private sanitizer: DomSanitizer, private toast: ToastService, private spinner: NgxSpinnerService) {
 
   }
 
@@ -45,6 +46,7 @@ export class TemplatesComponent {
   @ViewChild('nextcloudFrame') iframe!: ElementRef<HTMLIFrameElement>;
 
   ngAfterViewInit() {
+    this.spinner.show();
     const user: any = localStorage.getItem('user');
     const username = JSON.parse(user)?.email;
 
@@ -81,6 +83,7 @@ export class TemplatesComponent {
 
       if (event.data?.status === 'elementsHidden') {
         console.log('✅ Iframe UI elements hidden.');
+        this.spinner.hide();
       }
     });
   }
