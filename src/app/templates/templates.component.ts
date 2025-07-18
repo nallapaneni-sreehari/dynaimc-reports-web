@@ -20,7 +20,7 @@ export class TemplatesComponent {
 
   embedUrl: any = '';
   nextcloudUrl = environment.host;
-  
+
   redirectNextcloudFile = (fileId: any) => {
     return `${environment.host}/index.php/apps/files/files/${fileId}?dir=/&openfile=true`
   };
@@ -45,29 +45,44 @@ export class TemplatesComponent {
   @ViewChild('nextcloudFrame') iframe!: ElementRef<HTMLIFrameElement>;
 
   ngAfterViewInit() {
+    const user: any = localStorage.getItem('user');
+    const username = JSON.parse(user)?.email;
+
     const iframeEl = this.iframe?.nativeElement;
 
-    if (iframeEl) {
-      // Send a message to iframe after it loads
-      iframeEl.onload = () => {
-        // Replace '*' with the actual Nextcloud origin for security
+    if (!iframeEl) return;
+
+    iframeEl.onload = () => {
+      // ✅ Just send postMessage; let iframe handle polling
+      iframeEl?.contentWindow?.postMessage({
+        action: 'autofill',
+        inputs: {
+          'input[name="user"]': username,
+          'input[type="password"]': username
+        }
+      }, environment.host);
+    };
+
+    window?.addEventListener('message', (event) => {
+      if (event?.origin !== environment.host) return;
+
+      if (event.data?.status === 'autofillComplete') {
         iframeEl?.contentWindow?.postMessage({
           action: 'hideUIElements',
-          elements: ['header', 'leftpanel'],              // example IDs
-          classNames: ['app-navigation', 'files-navigation', '#header-menu contactsmenu', '#header-menu unified-search-menu']  // the classes to hide
+          elements: ['header', 'leftpanel'],
+          classNames: [
+            'app-navigation',
+            'files-navigation',
+            '#header-menu contactsmenu',
+            '#header-menu unified-search-menu'
+          ]
         }, environment.host);
-      };
+      }
 
-      // Listen to messages from iframe
-      window?.addEventListener('message', (event) => {
-        if (event?.origin !== environment.host) {
-          // Ignore messages from unknown origins
-          return;
-        }
-        console.log('Message received from iframe:', event.data);
-        // Handle messages here...
-      });
-    }
+      if (event.data?.status === 'elementsHidden') {
+        console.log('✅ Iframe UI elements hidden.');
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -95,7 +110,7 @@ export class TemplatesComponent {
     setTimeout(() => {
       this.copied = false;
     }, 1500);
-    
+
     this.toast.success('Copied!', 'Email and password copied to clipboard');
   }
 
