@@ -7,4 +7,5 @@ export const ENDPOINTS = {
     getTemplates: NEXTCLOUD + '/files',
     downloadTemplate: NEXTCLOUD + '/files/download',
     generateAndDownload: REPORTS + '/generateForWeb',
+    previewForWeb: REPORTS + '/previewForWeb'
 }

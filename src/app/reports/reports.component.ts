@@ -29,15 +29,18 @@ import {
   themeQuartz,
 } from "ag-grid-community";
 import { AgCellRendererComponent } from './ag-cell-renderer/ag-cell-renderer.component';
+import { ToggleButton } from 'primeng/togglebutton';
+import { ENDPOINTS } from '../../constants/constants';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule, AgGridModule, ButtonModule, DialogModule, DropdownModule, FileUploadModule, TabViewModule, TextareaModule, SplitterModule, JsonEditorComponent, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, AgGridModule, ButtonModule, DialogModule, DropdownModule, FileUploadModule, TabViewModule, TextareaModule, SplitterModule, JsonEditorComponent, ReactiveFormsModule, ToggleButton],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css'
 })
 export class ReportsComponent implements OnInit {
+  previewChecked: boolean = false;
   templatesData: any;
   iFrameUrl: any;
   isTemplatesLoading: any;
@@ -320,10 +323,23 @@ export class ReportsComponent implements OnInit {
 
   }
 
-  generateAndDownload() {
-    this.spinner.show();
+  generateAndDownload(type: string) {
     const template: any = this.templatesData?.find((temp: any) => temp.name === this.selectedTemplate);
+    
+    if (!template) {
+      this.showError({ msg: 'Failed', details: 'Select a template to generate report' });
+      return;
+    }
+    
+    // Handle preview
+    if (type === 'preview') {
+      const livePreview = environment?.apiUrl + ENDPOINTS.previewForWeb + `${Date.now()}`;
+      const finalUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${livePreview}`;
+      this.iFrameUrl = this.sanitize.bypassSecurityTrustResourceUrl(finalUrl);
+      return;
+    }
 
+    this.spinner.show();
     const user: any = localStorage.getItem('user');
     const username = JSON.parse(user)?.email;
 
@@ -352,6 +368,7 @@ export class ReportsComponent implements OnInit {
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
         }, 100);
+
         this.showSuccess({ msg: 'Success', details: 'Report generated successfully' });
         this.spinner.hide();
       },
@@ -368,7 +385,7 @@ export class ReportsComponent implements OnInit {
     this.toast.success(msg, details);
   }
   showError({ msg, details }: any) {
-    this.toast.success(msg, details);
+    this.toast.error(msg, details);
   }
 
 }

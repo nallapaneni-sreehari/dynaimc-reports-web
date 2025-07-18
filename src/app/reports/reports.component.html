@@ -60,16 +60,24 @@
                 </p-tabPanel>
 
                 <p-tabPanel headerStyleClass="!pl-0" header="Upload CSV" class="!pl-0">
-                  <label for="dataFile">Upload CSV</label>
-                  <p-fileUpload name="dataFile" customUpload [auto]="false" (uploadHandler)="handleCSVUpload($event)"
-                    accept=".csv" maxFileSize="1000000" chooseLabel="Choose CSV" uploadLabel="Upload"
-                    cancelLabel="Cancel"></p-fileUpload>
+                  <form class="h-[400px] ">
+                    <div class="h-[90%]">
+                      <label for="dataFile">Upload CSV</label>
+                      <p-fileUpload name="dataFile" customUpload [auto]="false" (uploadHandler)="handleCSVUpload($event)"
+                        accept=".csv" maxFileSize="1000000" chooseLabel="Choose CSV" uploadLabel="Upload"
+                        cancelLabel="Cancel">
+                      </p-fileUpload>
+                    </div>
+                  </form>
                 </p-tabPanel>
-              </p-tabView>
+                <!-- Generate Button -->
+                <div class="flex justify-between items-center my-2">
+                  <p-togglebutton [(ngModel)]="previewChecked" offLabel="Show Preview" onLabel="Show Original" onIcon="pi pi-file-word" offIcon="pi pi-eye" (click)="generateAndDownload('preview')" />
 
-              <!-- Generate Button -->
-              <button pButton type="button" label="Generate & Preview" icon="pi pi-check" class="p-button-primary my-2"
-                (click)="generateAndDownload()"></button>
+                  <p-button label="Download" icon="pi pi-download" severity="primary" (click)="generateAndDownload('download')" />
+                </div>
+                
+              </p-tabView>
             </div>
           </div>
         </ng-template>
