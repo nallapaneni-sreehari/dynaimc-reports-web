@@ -17,10 +17,9 @@
             <div class="flex items-start gap-3">
                 <i class="pi pi-chart-bar text-yellow-500 text-xl mt-1"></i>
                 <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-800 dark:text-yellow-100">You have no active reports
-                        configured.</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Start generating insights now.</p>
-                    <p-button severity="warn" size="small" label="Create Report" icon="pi pi-plus-circle" class="w-full" />
+                    <p class="text-sm font-medium text-gray-800 dark:text-yellow-100">You haven't created any templates yet.</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Start creating templates now.</p>
+                    <p-button [routerLink]="['/templates']" severity="warn" size="small" label="Create Templates" icon="pi pi-plus-circle" class="w-full" />
                 </div>
             </div>
         </div>
@@ -30,10 +29,9 @@
             <div class="flex items-start gap-3">
                 <i class="pi pi-key text-red-500 text-xl mt-1"></i>
                 <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-800 dark:text-red-100">Access token has expired.</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Reconnect your account to continue using
-                        ReportsForge.</p>
-                    <p-button severity="danger" size="small" label="Create Report" icon="pi pi-sign-in" class="w-full" />
+                    <p class="text-sm font-medium text-gray-800 dark:text-red-100">You can create API keys to integrate ReportsForge</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Integrate your applications with ReportsForge APIs to generate bulk reports</p>
+                    <p-button severity="danger" size="small" label="Create API Keys" icon="pi pi-key" class="w-full" />
                 </div>
             </div>
         </div>
@@ -43,10 +41,10 @@
             <div class="flex items-start gap-3">
                 <i class="pi pi-database text-blue-500 text-xl mt-1"></i>
                 <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-800 dark:text-blue-100">1.2GB unused data exports found.
+                    <p class="text-sm font-medium text-gray-800 dark:text-blue-100">5 unused templates
                     </p>
-                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Free up space for better performance.</p>
-                    <p-button severity="info" size="small" label="Create Report" icon="pi pi-trash" class="w-full" />
+                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">You haven't used these templates in a while</p>
+                    <p-button severity="info" size="small" label="Review Now" icon="pi pi-trash" class="w-full" />
                 </div>
             </div>
         </div>
@@ -56,11 +54,9 @@
             <div class="flex items-start gap-3">
                 <i class="pi pi-clock text-purple-500 text-xl mt-1"></i>
                 <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-800 dark:text-purple-100">Weekly analytics not
-                        scheduled.</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Enable scheduled reports to automate
-                        insights.</p>
-                    <p-button severity="help" size="small" label="Create Report" icon="pi calendar-plus" class="w-full" />
+                    <p class="text-sm font-medium text-gray-800 dark:text-purple-100">2 Bulk Schedulers are running</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-300 mb-2">Bulk shcedulers are forging the reports, you'll recieve notification once completed</p>
+                    <p-button severity="help" size="small" label="Check Status Now" icon="pi pi-eye" class="w-full" />
                 </div>
             </div>
         </div>
