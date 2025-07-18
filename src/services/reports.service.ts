@@ -3,10 +3,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ENDPOINTS } from '../constants/constants';
 import { environment } from '../environments/environment';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ReportService {
   constructor(private http: HttpClient) { }
+
+  public themeChange: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
   downloadTemplate(params: any, options: any) {
     const url = environment.apiUrl + ENDPOINTS.downloadTemplate;

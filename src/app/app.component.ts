@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +20,7 @@ import { ToastModule } from 'primeng/toast';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { MenuModule } from 'primeng/menu';
+import { ReportService } from '../services/reports.service';
 
 @Component({
   selector: 'app-root',
@@ -67,7 +68,7 @@ export class AppComponent {
 
   drawerOpen = false;
 
-  constructor(private oauthService: OAuthService, public auth: AuthService, private router: Router) { }
+  constructor(private oauthService: OAuthService, public auth: AuthService, private router: Router, private rs: ReportService) { }
 
   toggleDrawer() {
     // Toggle the side nav width and expanded state when the button is clicked
@@ -128,11 +129,14 @@ export class AppComponent {
     this.router.navigate(['/'])
   }
 
-  isDark = true;
+  isDark = false;
   toggleDarkMode() {
-    document.documentElement.classList.toggle('dark', this.isDark); // HTML element
-    document.documentElement.classList.toggle('app-dark', this.isDark); // App element
+    document.documentElement.classList.toggle('dark', !this.isDark); // HTML element
+    document.documentElement.classList.toggle('app-dark', !this.isDark); // App element
     this.isDark = !this.isDark;
+
+    // Call themeChange event so that ag grid color also will change to dark theme
+    this.rs?.themeChange?.next(this.isDark ? 'dark' : 'light');
   }
 
   toggleLightByDefault() {

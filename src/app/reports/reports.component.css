@@ -63,3 +63,24 @@ json-editor div {
   overflow-y: auto;
   /* or min-height large enough */
 }
+
+::ng-deep .jsoneditor-wrapper.dark .jsoneditor {
+  border: 1px solid #34d399;
+}
+
+::ng-deep .jsoneditor-wrapper.dark .jsoneditor-menu {
+  background: #059669 !important;
+  color: white;
+}
+
+::ng-deep .jsoneditor-wrapper.dark .jsoneditor-field,
+::ng-deep .jsoneditor-wrapper.dark .jsoneditor-value {
+  color: #f3f4f6 !important;
+}
+
+::ng-deep .jsoneditor-wrapper.dark .jsoneditor-statusbar {
+  background: #064e3b !important;
+  color: #d1fae5;
+}
+
+/* other dark styles... */

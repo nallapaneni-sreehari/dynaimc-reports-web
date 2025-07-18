@@ -1,7 +1,7 @@
 <!-- reports.component.html -->
 <div class="p-4">
   <div class="flex justify-between items-center mb-4">
-    <h2 class="text-2xl font-semibold text-gray-800">Reports</h2>
+    <h2 class="text-2xl font-semibold">Reports</h2>
     <div class="flex justify-between gap-2 items-center">
       <p-button type="button" label="Integrate with API" icon="pi pi-code" severity="info" />
       <p-button type="button" label="Generate Report" icon="pi pi-plus" (click)="openGenerateDialog()" />
@@ -14,7 +14,7 @@
     <p-tabPanel header="Failed"></p-tabPanel>
   </p-tabView>
 
-  <ag-grid-angular class="ag-theme-alpine" style="width: 100%; height: 500px;" [rowData]="filteredReports"
+  <ag-grid-angular class="ag-theme-alpine" style="width: 100%; height: 500px;" [rowData]="filteredReports" [theme]="theme"
     [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [pagination]="true">
   </ag-grid-angular>
 
@@ -50,8 +50,10 @@
                   <!-- Parent container with fixed height -->
                   <form [formGroup]="form" class="h-[400px]">
                     <!-- Force json-editor to take full height -->
-                    <json-editor class="!h-full" [options]="editorOptions" (change)="changeLog($event)"
-                      [data]="jsonData" #jsonEditor formControlName="jsonData"></json-editor>
+                     <div class="jsoneditor-wrapper h-[90%]" [class.dark]="isDarkMode">
+                       <json-editor class="!h-full" [options]="editorOptions" (change)="changeLog($event)"
+                         [data]="jsonData" #jsonEditor formControlName="jsonData"></json-editor>
+                    </div>
                   </form>
 
                   <!-- <textarea id="jsonData" rows="10" pInputTextarea [(ngModel)]="jsonData" class="w-full"></textarea> -->

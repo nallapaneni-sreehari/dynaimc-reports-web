@@ -20,6 +20,15 @@ import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { environment } from '../../environments/environment';
 import { ToastService } from '../../services/toast.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {
+  ModuleRegistry,
+  colorSchemeDarkBlue,
+  colorSchemeDarkWarm,
+  colorSchemeLightCold,
+  colorSchemeLightWarm,
+  themeQuartz,
+} from "ag-grid-community";
+import { AgCellRendererComponent } from './ag-cell-renderer/ag-cell-renderer.component';
 
 @Component({
   selector: 'app-reports',
@@ -37,6 +46,8 @@ export class ReportsComponent implements OnInit {
   jsonDataModified: any;
   fb: FormBuilder = new FormBuilder();
   form: FormGroup;
+  theme = themeQuartz.withPart(colorSchemeLightWarm);
+  isDarkMode = false;
 
   constructor(
     private templateService: TemplateService,
@@ -56,6 +67,15 @@ export class ReportsComponent implements OnInit {
     };
     this.form = this.fb.group({
       jsonData: [this.jsonData]
+    });
+
+    this.reportService?.themeChange?.subscribe((theme) => {
+      if (theme === "dark") {
+        this.theme = themeQuartz.withPart(colorSchemeDarkBlue);
+      } else {
+        this.theme = themeQuartz.withPart(colorSchemeLightWarm);
+      }
+      this.isDarkMode = theme === 'dark';
     })
   }
 
@@ -132,8 +152,12 @@ export class ReportsComponent implements OnInit {
     {
       headerName: 'Download',
       field: 'download',
-      cellRenderer: (params: any) => {
-        return params.value ? `<a href="${params.value}" target="_blank">Download</a>` : 'N/A';
+      cellRenderer: AgCellRendererComponent,
+      cellRendererParams: ()=>{
+        return {
+          type: 'download',
+          label: 'Download'
+        }
       },
       flex: 1
     }
