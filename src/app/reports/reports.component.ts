@@ -297,7 +297,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  zoom: number = 0.9;
+  zoom: number = 1;
 
   zoomIn() {
     this.zoom = Math.min(this.zoom + 0.1, 3); // Max 300%
