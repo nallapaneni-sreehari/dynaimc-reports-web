@@ -72,7 +72,7 @@
                 </p-tabPanel>
                 <!-- Generate Button -->
                 <div class="flex justify-between items-center my-2">
-                  <p-togglebutton [(ngModel)]="previewChecked" offLabel="Show Preview" onLabel="Show Original" onIcon="pi pi-file-word" offIcon="pi pi-eye" (click)="generateAndDownload('preview')" />
+                  <p-togglebutton size="large" [(ngModel)]="previewChecked" offLabel="Show Preview" onLabel="Show Original" onIcon="pi pi-file-word" offIcon="pi pi-eye" (click)="generateAndDownload('preview')" />
 
                   <p-button label="Download" icon="pi pi-download" severity="primary" (click)="generateAndDownload('download')" />
                 </div>

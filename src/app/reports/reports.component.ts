@@ -51,6 +51,7 @@ export class ReportsComponent implements OnInit {
   form: FormGroup;
   theme = themeQuartz.withPart(colorSchemeLightWarm);
   isDarkMode = false;
+  originalFilePreview: string = '';
 
   constructor(
     private templateService: TemplateService,
@@ -220,6 +221,7 @@ export class ReportsComponent implements OnInit {
 
     const finalUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${livePreview}/api/v1/nextcloud/files/live/${encodedUrl}/${encodedUsername}`;
 
+    this.originalFilePreview = finalUrl;
     this.iFrameUrl = this.sanitize.bypassSecurityTrustResourceUrl(finalUrl);
     this.showPreview = true;
     console.info(`iFrameUrl ::: `, this.iFrameUrl);
@@ -324,18 +326,12 @@ export class ReportsComponent implements OnInit {
   }
 
   generateAndDownload(type: string) {
+    console.log('preview :: ', this.previewChecked);
+
     const template: any = this.templatesData?.find((temp: any) => temp.name === this.selectedTemplate);
     
     if (!template) {
       this.showError({ msg: 'Failed', details: 'Select a template to generate report' });
-      return;
-    }
-    
-    // Handle preview
-    if (type === 'preview') {
-      const livePreview = environment?.apiUrl + ENDPOINTS.previewForWeb + `${Date.now()}`;
-      const finalUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${livePreview}`;
-      this.iFrameUrl = this.sanitize.bypassSecurityTrustResourceUrl(finalUrl);
       return;
     }
 
@@ -356,6 +352,19 @@ export class ReportsComponent implements OnInit {
 
         const blob = new Blob([data], { type: fileType });
         const url = window.URL.createObjectURL(blob);
+
+        if (type === 'preview') {
+          if (this.previewChecked) {
+            this.iFrameUrl = this.sanitize.bypassSecurityTrustResourceUrl(url);
+            this.showSuccess({ msg: 'Success', details: 'Showing the preview' });
+          }
+          else {
+            this.iFrameUrl = this.sanitize.bypassSecurityTrustResourceUrl(this.originalFilePreview);
+            this.showSuccess({ msg: 'Success', details: 'Showing the original (template)' });
+          }
+          this.spinner.hide();
+          return;
+        }
 
         const a = document.createElement('a');
         a.href = url;
