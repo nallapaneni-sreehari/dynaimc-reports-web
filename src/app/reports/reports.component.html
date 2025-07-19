@@ -72,9 +72,9 @@
                 </p-tabPanel>
                 <!-- Generate Button -->
                 <div class="flex justify-between items-center my-2">
-                  <p-togglebutton size="large" [(ngModel)]="previewChecked" offLabel="Show Preview" onLabel="Show Original" onIcon="pi pi-file-word" offIcon="pi pi-eye" (click)="generateAndDownload('preview')" />
-
                   <p-button label="Download" icon="pi pi-download" severity="primary" (click)="generateAndDownload('download')" />
+                  
+                  <p-togglebutton size="large" [(ngModel)]="previewChecked" offLabel="Show Preview" onLabel="Show Original" onIcon="pi pi-file-word" offIcon="pi pi-eye" (click)="generateAndDownload('preview')" />
                 </div>
                 
               </p-tabView>
@@ -98,11 +98,16 @@
                 </span>
               </div>
             </div> -->
-            <div *ngIf="iFrameUrl && !this.selectedTemplate?.includes('.pdf')" class="origin-top-left"
-              [style.transform]="'scale(' + zoom + ')'" [style.transformOrigin]="'top left'"
-              [style.width]="100 / zoom + '%'">
-              <iframe [src]="iFrameUrl" width="100%" height="700px" frameborder="0">
-              </iframe>
+            <div *ngIf="iFrameUrl && !this.selectedTemplate?.includes('.pdf')" class="origin-top-left" [style.transform]="'scale(' + zoom + ')'" [style.transformOrigin]="'top left'" [style.width]="100 / zoom + '%'">
+              <iframe *ngIf="!previewChecked" [src]="iFrameUrl" width="100%" height="700px" frameborder="0"></iframe>
+
+              <ngx-extended-pdf-viewer
+                *ngIf="iFrameUrl && previewChecked"
+                [src]="iFrameUrl"
+                useBrowserLocale="true"
+                [sidebarVisible]="false"
+                height="80vh">
+              </ngx-extended-pdf-viewer>
             </div>
 
             <div *ngIf="this.selectedTemplate?.includes('.pdf')" class="w-full overflow-hidden" style="height: 100vh;">

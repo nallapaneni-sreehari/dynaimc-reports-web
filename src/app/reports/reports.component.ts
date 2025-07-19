@@ -30,12 +30,12 @@ import {
 } from "ag-grid-community";
 import { AgCellRendererComponent } from './ag-cell-renderer/ag-cell-renderer.component';
 import { ToggleButton } from 'primeng/togglebutton';
-import { ENDPOINTS } from '../../constants/constants';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule, AgGridModule, ButtonModule, DialogModule, DropdownModule, FileUploadModule, TabViewModule, TextareaModule, SplitterModule, JsonEditorComponent, ReactiveFormsModule, ToggleButton],
+  imports: [CommonModule, FormsModule, AgGridModule, ButtonModule, DialogModule, DropdownModule, FileUploadModule, TabViewModule, TextareaModule, SplitterModule, JsonEditorComponent, ReactiveFormsModule, ToggleButton, NgxExtendedPdfViewerModule],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css'
 })
@@ -361,7 +361,7 @@ export class ReportsComponent implements OnInit {
 
         if (type === 'preview') {
           if (this.previewChecked) {
-            this.iFrameUrl = this.sanitize.bypassSecurityTrustResourceUrl(url);
+            this.iFrameUrl = url;
             this.showSuccess({ msg: 'Success', details: 'Showing the preview' });
           }
           this.spinner.hide();
