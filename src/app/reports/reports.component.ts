@@ -328,6 +328,12 @@ export class ReportsComponent implements OnInit {
   generateAndDownload(type: string) {
     console.log('preview :: ', this.previewChecked);
 
+    if (type === 'preview' && !this.previewChecked) {
+      this.iFrameUrl = this.sanitize.bypassSecurityTrustResourceUrl(this.originalFilePreview);
+      this.showSuccess({ msg: 'Success', details: 'Showing the original (template)' });
+      return;
+    }
+
     const template: any = this.templatesData?.find((temp: any) => temp.name === this.selectedTemplate);
     
     if (!template) {
@@ -357,10 +363,6 @@ export class ReportsComponent implements OnInit {
           if (this.previewChecked) {
             this.iFrameUrl = this.sanitize.bypassSecurityTrustResourceUrl(url);
             this.showSuccess({ msg: 'Success', details: 'Showing the preview' });
-          }
-          else {
-            this.iFrameUrl = this.sanitize.bypassSecurityTrustResourceUrl(this.originalFilePreview);
-            this.showSuccess({ msg: 'Success', details: 'Showing the original (template)' });
           }
           this.spinner.hide();
           return;
