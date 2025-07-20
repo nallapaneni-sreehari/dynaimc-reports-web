@@ -8,7 +8,7 @@
   <!-- Main Content Area -->
   <div class="card main header z-50">
     <!-- <p-menubar [model]="items" /> -->
-    <p-toolbar [styleClass]="auth?.isLoggedIn ? '!p-0' : '!p-2' + ' !bg-emerald-50'" [style]="" class="!bg-indigo-500">
+    <p-toolbar [styleClass]="auth.isLoggedIn ? '!p-0' : '!p-2' + ' !bg-emerald-50'" [style]="" class="!bg-indigo-500">
       <ng-template #start>
         <div class="flex justify-between items-center md:gap-10">
           <div class="flex items-center">
@@ -31,7 +31,7 @@
           </div>
 
           <!-- Mobile Menu Toggle (hidden on md and up) -->
-          <div class="lg:hidden">
+          <div *ngIf="auth?.isLoggedIn"  class="lg:hidden">
             <p-button icon="pi pi-bars" text (click)="mobileMenu?.toggle($event)" />
             <p-menu #mobileMenu [model]="mobileMenuItems" popup />
           </div>
@@ -111,11 +111,11 @@
       <div *ngFor="let notif of notifications; let i = index"
         class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex justify-between items-start gap-3 bg-white dark:bg-gray-900">
         <div class="flex items-start gap-3">
-          <i [ngClass]="notif.icon" class="text-xl text-primary-500 mt-1"></i>
+          <i [ngClass]="getIconClass(notif.title)"  class="text-xl text-primary-500 mt-1"></i>
           <div>
             <div class="font-semibold text-sm">{{ notif.title }}</div>
-            <div class="text-xs text-gray-500 dark:text-gray-400">{{ notif.time }}</div>
-            <div class="text-sm text-gray-700 dark:text-gray-300">{{ notif.message }}</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">{{ getRelativeTime(notif.created_at) }}</div>
+            <div class="text-sm text-gray-700 dark:text-gray-300">{{ notif.details }}</div>
           </div>
         </div>
         <button pButton type="button" icon="pi pi-times" text class="!p-0 !m-0" (click)="clearNotification(i)"

@@ -31,12 +31,15 @@ export class LoginComponent {
       if (e.type === 'token_received') {
         this.userInfo = await firstValueFrom(this.auth.loadUserInfo());
         console.info(`userInfo ::: token recieve`, this.userInfo);
-        localStorage.setItem('user', JSON.stringify(this.userInfo));
         this.showSuccess({msg: 'Success', details: `Welcome, ${this.userInfo?.name}`});
         
         this.loginService.login({ name: this.userInfo?.name, email: this.userInfo?.email }).subscribe({
-          next: (data) => {
+          next: (data: any) => {
+            localStorage.setItem('user', JSON.stringify({...this.userInfo, userId: data?.user?.id}));
             console.info(`Login success :: `, data);
+          },
+          error: (_err)=>{
+            localStorage.setItem('user', JSON.stringify(this.userInfo));
           }
         });
         this.router.navigate(['/dashboard']);
