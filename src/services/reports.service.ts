@@ -10,7 +10,8 @@ export class ReportService {
   constructor(private http: HttpClient) { }
 
   public themeChange: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-
+  public showFilePreviewBS: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  
   downloadTemplate(params: any, options: any) {
     const url = environment.apiUrl + ENDPOINTS.downloadTemplate;
     return this.http.post(url, params, options);
@@ -24,5 +25,11 @@ export class ReportService {
   getReports(params: any) {
     const url = environment.apiUrl + ENDPOINTS.getReports + `/${params?.email}`;
     return this.http.get(url, params);
+  }
+
+  getSignedUrl(params: {bucket: string, key: string}) {
+    // ?bucket=${bucket}&key=${key}
+    const url = environment.apiUrl + ENDPOINTS.downloadReport + `?bucket=${params?.bucket}&key=${params?.key}`;
+    return this.http.get(url);
   }
 }

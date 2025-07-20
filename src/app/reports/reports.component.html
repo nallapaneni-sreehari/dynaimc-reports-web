@@ -3,7 +3,8 @@
   <div class="flex justify-between items-center mb-4">
     <h2 class="text-2xl font-semibold">Reports</h2>
     <div class="hidden md:flex justify-between gap-2 items-center">
-      <p-button *ngIf="selectedRows.length" label="Delete" icon="pi pi-trash" (click)="deleteSelected()" severity="danger" />
+      <p-button *ngIf="selectedRows.length" label="Delete" icon="pi pi-trash" (click)="deleteSelected()"
+        severity="danger" />
       <p-button type="button" label="Integrate with API" icon="pi pi-code" severity="info" />
       <p-button type="button" label="Generate Report" icon="pi pi-plus" (click)="openGenerateDialog()" />
       <!-- <p-button type="button" text icon="pi pi-ellipsis-v" severity="info" /> -->
@@ -142,4 +143,12 @@
       </p-splitter>
     </div>
   </p-dialog>
+
+  <p-dialog [header]="previewFileName" [modal]="true" [(visible)]="showFilePreview" [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+    <ngx-extended-pdf-viewer *ngIf="filePreviewUrl" [src]="filePreviewUrl" useBrowserLocale="true"
+      [sidebarVisible]="false" height="80vh">
+    </ngx-extended-pdf-viewer>
+  </p-dialog>
+
 </div>

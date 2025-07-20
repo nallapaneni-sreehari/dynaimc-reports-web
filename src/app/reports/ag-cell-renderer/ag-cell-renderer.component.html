@@ -1,3 +1,9 @@
 <div *ngIf="params?.type === 'download'" class="flex items-center h-full w-full justify-start">
-    <button *ngIf="params?.value" pButton type="button" text icon="pi pi-download" class="p-button-sm" (click)="downloadFile()"></button>
+    <button pTooltip="Download" tooltipPosition="top" *ngIf="params?.value" pButton type="button" text
+        icon="pi pi-download" class="p-button-sm" rounded (click)="downloadFile('download')"></button>
+    <button pTooltip="Preview" tooltipPosition="top" *ngIf="params?.value" pButton type="button" text icon="pi pi-eye"
+        class="p-button-sm" severity="info" rounded (click)="downloadFile('preview')"></button>
+    <button pTooltip="Delete" tooltipPosition="top" *ngIf="params?.value" pButton type="button" text icon="pi pi-trash"
+        class="p-button-sm" severity="danger" rounded (click)="deleteFile($event)"></button>
+    <p-confirmpopup />
 </div>
