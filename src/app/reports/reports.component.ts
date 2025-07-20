@@ -54,6 +54,9 @@ export class ReportsComponent implements OnInit {
   isDarkMode = false;
   originalFilePreview: string = '';
   reportsData: any = [];
+  showFilePreview: boolean = false;
+  filePreviewUrl: any = '';
+  previewFileName: any = '';
 
   constructor(
     private templateService: TemplateService,
@@ -82,7 +85,15 @@ export class ReportsComponent implements OnInit {
         this.theme = themeQuartz.withPart(colorSchemeLightWarm);
       }
       this.isDarkMode = theme === 'dark';
-    })
+    });
+
+    this.reportService.showFilePreviewBS.subscribe(data=>{
+      if(data?.show){
+        this.showFilePreview = data?.show;
+        this.filePreviewUrl = data?.url;
+        this.previewFileName = data?.filename;
+      }
+    });
   }
 
   filteredReports: any = [];
@@ -129,7 +140,7 @@ export class ReportsComponent implements OnInit {
     },
     { headerName: 'File Size', field: 'fileSize', flex: 1 },
     {
-      headerName: 'Download',
+      headerName: 'Actions',
       field: 'url',
       cellRenderer: AgCellRendererComponent,
       cellRendererParams: () => {
@@ -403,6 +414,6 @@ export class ReportsComponent implements OnInit {
   }
 
   deleteSelected(){
-    
+
   }
 }

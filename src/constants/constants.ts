@@ -10,6 +10,7 @@ export const ENDPOINTS = {
     generateAndDownload: REPORTS + '/generateForWeb',
     previewForWeb: REPORTS + '/previewForWeb',
     getReports: REPORTS + '/getReports',
+    downloadReport: REPORTS + '/downloadReport',
     getNotifications: NOTIFICATIONS
 }
 
