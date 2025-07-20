@@ -31,6 +31,7 @@ import {
 import { AgCellRendererComponent } from './ag-cell-renderer/ag-cell-renderer.component';
 import { ToggleButton } from 'primeng/togglebutton';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { sampleJson } from '../../constants/constants';
 
 @Component({
   selector: 'app-reports',
@@ -86,35 +87,7 @@ export class ReportsComponent implements OnInit {
 
   filteredReports: any = [];
   selectedTabIndex = 0; // 0: All, 1: Completed, 2: Failed
-  jsonData: any = [{
-    "customer_name": "Amit Verma",
-    "item": [
-      {
-        "date": "2025-06-01",
-        "mode": "UPI",
-        "part": "Salary",
-        "depo": "50,000",
-        "withdrawals": "",
-        "bal": "50,000"
-      },
-      {
-        "date": "2025-06-03",
-        "mode": "ATM",
-        "part": "Cash Withdrawal",
-        "depo": "",
-        "withdrawals": "5,000",
-        "bal": "45,000"
-      },
-      {
-        "date": "2025-06-05",
-        "mode": "Bank Transfer",
-        "part": "Rent",
-        "depo": "",
-        "withdrawals": "15,000",
-        "bal": "30,000"
-      }
-    ]
-  }];
+  jsonData: any = sampleJson
 
   screenWidth = window.innerWidth;
   splitOrientation: 'horizontal' | 'vertical' = this.screenWidth < 768 ? 'vertical' : 'horizontal';
@@ -126,13 +99,20 @@ export class ReportsComponent implements OnInit {
   };
 
   columnDefs: ColDef[] = [
+    {
+      headerName: '',
+      checkboxSelection: true,
+      headerCheckboxSelection: true, // <-- this enables header checkbox
+      width: 50,
+      filter: false
+    },
     { headerName: 'Report Name', field: 'filename', flex: 1 },
     {
       headerName: 'Status',
       field: 'status',
       flex: 1,
       cellRenderer: (params: any) => {
-        const statusMap: any = { S: 'Success', F: 'Failed' };
+        const statusMap: any = { G: 'Generated', F: 'Failed' };
         return statusMap[params?.value] || params?.value;
       }
     },
@@ -231,7 +211,7 @@ export class ReportsComponent implements OnInit {
     if (this.selectedTabIndex === 0) {
       this.filteredReports = [...this.reportsData]; // All
     } else if (this.selectedTabIndex === 1) {
-      this.filteredReports = this.reportsData.filter((r: { status: string; }) => r.status === 'S');
+      this.filteredReports = this.reportsData.filter((r: { status: string; }) => r.status === 'G');
     } else {
       this.filteredReports = this.reportsData.filter((r: { status: string; }) => r.status === 'F');
     }
@@ -339,9 +319,11 @@ export class ReportsComponent implements OnInit {
     this.spinner.show();
     const user: any = localStorage.getItem('user');
     const username = JSON.parse(user)?.email;
+    const userId = JSON.parse(user)?.userId;
+
 
     this.reportService.generateAndDownload(
-      { downloadUrl: template?.downloadUrl, username, data: this.form?.value?.jsonData, download: type === "download" },
+      { downloadUrl: template?.downloadUrl, username, data: this.form?.value?.jsonData, download: type === "download", userId },
       { responseType: 'arraybuffer' }
     ).subscribe({
       next: (data: ArrayBuffer) => {
@@ -405,7 +387,7 @@ export class ReportsComponent implements OnInit {
         this.showSuccess({ msg: 'Success', details: data?.message });
         this.spinner.hide();
       },
-      error: (_err)=>{
+      error: (_err) => {
         this.spinner.hide();
       }
     })
@@ -413,5 +395,14 @@ export class ReportsComponent implements OnInit {
 
   refreshData() {
     this.getReports();
+  }
+
+  selectedRows: any[] = [];
+  onSelectionChanged(event: any) {
+    this.selectedRows = event.api.getSelectedRows();
+  }
+
+  deleteSelected(){
+    
   }
 }

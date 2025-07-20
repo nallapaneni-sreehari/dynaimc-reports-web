@@ -3,12 +3,15 @@
   <div class="flex justify-between items-center mb-4">
     <h2 class="text-2xl font-semibold">Reports</h2>
     <div class="hidden md:flex justify-between gap-2 items-center">
+      <p-button *ngIf="selectedRows.length" label="Delete" icon="pi pi-trash" (click)="deleteSelected()" severity="danger" />
       <p-button type="button" label="Integrate with API" icon="pi pi-code" severity="info" />
       <p-button type="button" label="Generate Report" icon="pi pi-plus" (click)="openGenerateDialog()" />
+      <!-- <p-button type="button" text icon="pi pi-ellipsis-v" severity="info" /> -->
     </div>
 
     <!-- Mobile view -->
     <div class="block md:hidden flex justify-between gap-2 items-center">
+      <p-button *ngIf="selectedRows.length" icon="pi pi-trash" (click)="deleteSelected()" severity="danger" />
       <p-button type="button" icon="pi pi-code" severity="info" />
       <p-button type="button" icon="pi pi-plus" (click)="openGenerateDialog()" />
     </div>
@@ -20,12 +23,14 @@
     <p-tabPanel header="Failed"></p-tabPanel>
   </p-tabView>
 
-  <ag-grid-angular class="ag-theme-alpine" style="width: 100%; height: 500px;" [rowData]="filteredReports" [theme]="theme"
-    [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [pagination]="true">
+  <ag-grid-angular class="ag-theme-alpine" style="width: 100%; height: 500px;" [rowData]="filteredReports"
+    [theme]="theme" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [pagination]="true"
+    rowSelection="multiple" [rowMultiSelectWithClick]="true" [suppressRowClickSelection]="true"
+    (selectionChanged)="onSelectionChanged($event)">
   </ag-grid-angular>
 
-  <p-dialog styleClass="!w-full !mx-5 !h-full" header="Generate New Report" [(visible)]="showGenerateDialog" (onHide)="refreshData()"
-    [modal]="true" class="!w-full">
+  <p-dialog styleClass="!w-full !mx-5 !h-full" header="Generate New Report" [(visible)]="showGenerateDialog"
+    (onHide)="refreshData()" [modal]="true" class="!w-full">
     <div class="h-full w-full">
       <p-splitter [panelSizes]="splitOrientation === 'horizontal' ? [40, 60] : [50, 50]"
         [styleClass]="splitOrientation === 'horizontal' ? 'mb-8 h-full' : 'mb-8 h-[calc(100vh-120px)]'"
@@ -56,9 +61,9 @@
                   <!-- Parent container with fixed height -->
                   <form [formGroup]="form" class="h-[400px]">
                     <!-- Force json-editor to take full height -->
-                     <div class="jsoneditor-wrapper h-[90%]" [class.dark]="isDarkMode">
-                       <json-editor class="!h-full" [options]="editorOptions" (change)="changeLog($event)"
-                         [data]="jsonData" #jsonEditor formControlName="jsonData"></json-editor>
+                    <div class="jsoneditor-wrapper h-[90%]" [class.dark]="isDarkMode">
+                      <json-editor class="!h-full" [options]="editorOptions" (change)="changeLog($event)"
+                        [data]="jsonData" #jsonEditor formControlName="jsonData"></json-editor>
                     </div>
                   </form>
 
@@ -69,20 +74,23 @@
                   <form class="h-[400px] ">
                     <div class="h-[90%]">
                       <label for="dataFile">Upload CSV</label>
-                      <p-fileUpload name="dataFile" customUpload [auto]="false" (uploadHandler)="handleCSVUpload($event)"
-                        accept=".csv" maxFileSize="1000000" chooseLabel="Choose CSV" uploadLabel="Upload"
-                        cancelLabel="Cancel">
+                      <p-fileUpload name="dataFile" customUpload [auto]="false"
+                        (uploadHandler)="handleCSVUpload($event)" accept=".csv" maxFileSize="1000000"
+                        chooseLabel="Choose CSV" uploadLabel="Upload" cancelLabel="Cancel">
                       </p-fileUpload>
                     </div>
                   </form>
                 </p-tabPanel>
                 <!-- Generate Button -->
                 <div class="flex justify-between items-center my-2">
-                  <p-button label="Download" icon="pi pi-download" severity="primary" (click)="generateAndDownload('download')" />
-                  
-                  <p-togglebutton size="large" [(ngModel)]="previewChecked" offLabel="Show Preview" onLabel="Show Original" onIcon="pi pi-file-word" offIcon="pi pi-eye" (click)="generateAndDownload('preview')" />
+                  <p-button label="Download" icon="pi pi-download" severity="primary"
+                    (click)="generateAndDownload('download')" />
+
+                  <p-togglebutton size="large" [(ngModel)]="previewChecked" offLabel="Show Preview"
+                    onLabel="Show Original" onIcon="pi pi-file-word" offIcon="pi pi-eye"
+                    (click)="generateAndDownload('preview')" />
                 </div>
-                
+
               </p-tabView>
             </div>
           </div>
@@ -104,15 +112,13 @@
                 </span>
               </div>
             </div> -->
-            <div *ngIf="iFrameUrl && !this.selectedTemplate?.includes('.pdf')" class="origin-top-left" [style.transform]="'scale(' + zoom + ')'" [style.transformOrigin]="'top left'" [style.width]="100 / zoom + '%'">
+            <div *ngIf="iFrameUrl && !this.selectedTemplate?.includes('.pdf')" class="origin-top-left"
+              [style.transform]="'scale(' + zoom + ')'" [style.transformOrigin]="'top left'"
+              [style.width]="100 / zoom + '%'">
               <iframe *ngIf="!previewChecked" [src]="iFrameUrl" width="100%" height="700px" frameborder="0"></iframe>
 
-              <ngx-extended-pdf-viewer
-                *ngIf="iFrameUrl && previewChecked"
-                [src]="iFrameUrl"
-                useBrowserLocale="true"
-                [sidebarVisible]="false"
-                height="80vh">
+              <ngx-extended-pdf-viewer *ngIf="iFrameUrl && previewChecked" [src]="iFrameUrl" useBrowserLocale="true"
+                [sidebarVisible]="false" height="80vh">
               </ngx-extended-pdf-viewer>
             </div>
 

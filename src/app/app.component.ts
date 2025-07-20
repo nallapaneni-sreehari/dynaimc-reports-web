@@ -21,6 +21,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { MenuModule } from 'primeng/menu';
 import { ReportService } from '../services/reports.service';
+import { formatDistanceToNow } from 'date-fns';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-root',
@@ -68,7 +70,7 @@ export class AppComponent {
 
   drawerOpen = false;
 
-  constructor(private oauthService: OAuthService, public auth: AuthService, private router: Router, private rs: ReportService) { }
+  constructor(private oauthService: OAuthService, public auth: AuthService, private router: Router, private rs: ReportService, private ls: LoginService) { }
 
   toggleDrawer() {
     // Toggle the side nav width and expanded state when the button is clicked
@@ -88,10 +90,10 @@ export class AppComponent {
     this.toggleLightByDefault();
 
     this.oauthService.events.subscribe(async (e: OAuthEvent) => {
-          if (e.type === 'token_received') {
-            this.userInfo = await firstValueFrom(this.auth.loadUserInfo());
-          }
-        });
+      if (e.type === 'token_received') {
+        this.userInfo = await firstValueFrom(this.auth.loadUserInfo());
+      }
+    });
 
     this.items = [
       {
@@ -119,7 +121,9 @@ export class AppComponent {
           this.auth.logout();
         }
       });
-      this.userInfo = await firstValueFrom(this.auth.loadUserInfo());
+    this.userInfo = await firstValueFrom(this.auth.loadUserInfo());
+
+    this.getNotifications();
   }
 
 
@@ -144,26 +148,17 @@ export class AppComponent {
     document.documentElement.classList.toggle('app-dark', false); // App element
   }
 
-  notifications = [
-    {
-      icon: 'pi pi-chart-line text-blue-400',
-      title: 'New Report',
-      time: '5 mins ago',
-      message: 'Your monthly sales report is ready.'
-    },
-    {
-      icon: 'pi pi-exclamation-triangle text-yellow-400',
-      title: 'System Alert',
-      time: '2 hours ago',
-      message: 'Disk usage is reaching 90%.'
-    },
-    {
-      icon: 'pi pi-bolt text-purple-400',
-      title: 'Promo Alert',
-      time: 'Yesterday',
-      message: 'Get 30% off on your next upgrade.'
-    }
-  ];
+  notifications: any = [];
+  getNotifications() {
+    const user: any = localStorage.getItem('user');
+    const userId = JSON.parse(user)?.userId;
+    this.ls.getNotifications({ userId }).subscribe({
+      next: (data: any) => {
+        this.notifications = data;
+      }
+    })
+  }
+  
 
   clearNotification(index: number) {
     this.notifications.splice(index, 1);
@@ -172,4 +167,19 @@ export class AppComponent {
   clearAll() {
     this.notifications = [];
   }
+
+  getRelativeTime(dateString: string): string {
+    return formatDistanceToNow(new Date(dateString), { addSuffix: true });
+  }
+  getIconClass(title: string): string {
+    if (/report/i.test(title)) {
+      return 'pi pi-chart-line text-blue-400';
+    } else if (/alert|system/i.test(title)) {
+      return 'pi pi-exclamation-triangle text-yellow-400';
+    } else if (/promo|offer|discount/i.test(title)) {
+      return 'pi pi-bolt text-purple-400';
+    }
+    return 'pi pi-info-circle text-gray-400';
+  }
+
 }

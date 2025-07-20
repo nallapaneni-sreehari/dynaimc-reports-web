@@ -12,4 +12,9 @@ export class LoginService {
     const url = environment.apiUrl + ENDPOINTS.login;
     return this.http.post(url, params, {});
   }
+
+  getNotifications(params: any) {
+    const url = environment.apiUrl + ENDPOINTS.getNotifications + `/${params?.userId}`;
+    return this.http.get(url);
+  }
 }
