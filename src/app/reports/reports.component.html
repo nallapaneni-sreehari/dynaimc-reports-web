@@ -18,7 +18,7 @@
     [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [pagination]="true">
   </ag-grid-angular>
 
-  <p-dialog styleClass="!w-full !mx-5 !h-full" header="Generate New Report" [(visible)]="showGenerateDialog"
+  <p-dialog styleClass="!w-full !mx-5 !h-full" header="Generate New Report" [(visible)]="showGenerateDialog" (onHide)="refreshData()"
     [modal]="true" class="!w-full">
     <div class="h-full w-full">
       <p-splitter [panelSizes]="splitOrientation === 'horizontal' ? [40, 60] : [50, 50]"

@@ -52,6 +52,7 @@ export class ReportsComponent implements OnInit {
   theme = themeQuartz.withPart(colorSchemeLightWarm);
   isDarkMode = false;
   originalFilePreview: string = '';
+  reportsData: any = [];
 
   constructor(
     private templateService: TemplateService,
@@ -118,30 +119,6 @@ export class ReportsComponent implements OnInit {
   screenWidth = window.innerWidth;
   splitOrientation: 'horizontal' | 'vertical' = this.screenWidth < 768 ? 'vertical' : 'horizontal';
 
-  reports = [
-    {
-      name: 'Client Invoice Jan',
-      status: 'Completed',
-      generatedOn: '2025-06-01',
-      fileSize: '320 KB',
-      download: '/reports/download/invoice_jan.pdf'
-    },
-    {
-      name: 'Q2 Sales Report',
-      status: 'Failed',
-      generatedOn: '2025-05-28',
-      fileSize: 'N/A',
-      download: ''
-    },
-    {
-      name: 'User Signup Analysis',
-      status: 'Completed',
-      generatedOn: '2025-05-15',
-      fileSize: '512 KB',
-      download: '/reports/download/signup_analysis.pdf'
-    }
-  ];
-
   defaultColDef = {
     sortable: true,
     filter: true,
@@ -149,15 +126,33 @@ export class ReportsComponent implements OnInit {
   };
 
   columnDefs: ColDef[] = [
-    { headerName: 'Report Name', field: 'name', flex: 1 },
-    { headerName: 'Status', field: 'status', flex: 1 },
-    { headerName: 'Generated On', field: 'generatedOn', flex: 1 },
+    { headerName: 'Report Name', field: 'filename', flex: 1 },
+    {
+      headerName: 'Status',
+      field: 'status',
+      flex: 1,
+      cellRenderer: (params: any) => {
+        const statusMap: any = { S: 'Success', F: 'Failed' };
+        return statusMap[params?.value] || params?.value;
+      }
+    },
+    {
+      headerName: 'Template Name',
+      field: 'template_name',
+      flex: 2
+    },
+    {
+      headerName: 'Generated At',
+      field: 'generated_at',
+      flex: 2,
+      valueFormatter: params => new Date(params.value).toLocaleString()
+    },
     { headerName: 'File Size', field: 'fileSize', flex: 1 },
     {
       headerName: 'Download',
-      field: 'download',
+      field: 'url',
       cellRenderer: AgCellRendererComponent,
-      cellRendererParams: ()=>{
+      cellRendererParams: () => {
         return {
           type: 'download',
           label: 'Download'
@@ -185,8 +180,8 @@ export class ReportsComponent implements OnInit {
   previewLoading = false;
 
   ngOnInit() {
-    this.filteredReports = [...this.reports];
-    
+    this.getReports();
+
     this.getUserTemplates();
 
     window.addEventListener('resize', () => {
@@ -234,11 +229,11 @@ export class ReportsComponent implements OnInit {
 
   filterReports() {
     if (this.selectedTabIndex === 0) {
-      this.filteredReports = [...this.reports]; // All
+      this.filteredReports = [...this.reportsData]; // All
     } else if (this.selectedTabIndex === 1) {
-      this.filteredReports = this.reports.filter(r => r.status === 'Completed');
+      this.filteredReports = this.reportsData.filter((r: { status: string; }) => r.status === 'S');
     } else {
-      this.filteredReports = this.reports.filter(r => r.status === 'Failed');
+      this.filteredReports = this.reportsData.filter((r: { status: string; }) => r.status === 'F');
     }
   }
   handleCSVUpload(event: any) {
@@ -335,7 +330,7 @@ export class ReportsComponent implements OnInit {
     }
 
     const template: any = this.templatesData?.find((temp: any) => temp.name === this.selectedTemplate);
-    
+
     if (!template) {
       this.showError({ msg: 'Failed', details: 'Select a template to generate report' });
       return;
@@ -346,7 +341,7 @@ export class ReportsComponent implements OnInit {
     const username = JSON.parse(user)?.email;
 
     this.reportService.generateAndDownload(
-      { downloadUrl: template?.downloadUrl, username, data: this.form?.value?.jsonData },
+      { downloadUrl: template?.downloadUrl, username, data: this.form?.value?.jsonData, download: type === "download" },
       { responseType: 'arraybuffer' }
     ).subscribe({
       next: (data: ArrayBuffer) => {
@@ -384,8 +379,8 @@ export class ReportsComponent implements OnInit {
         this.spinner.hide();
       },
       error: (err) => {
-        console.error('Download failed:', err);
-        this.showError({ msg: 'Failed', details: 'Report generation or download failed. Please try again.' });
+        console.error('Download failed:', err?.error);
+        this.showError({ msg: 'Failed', details: err?.error?.message ?? 'Report generation or download failed. Please try again.' });
         this.spinner.hide();
       }
     });
@@ -399,4 +394,21 @@ export class ReportsComponent implements OnInit {
     this.toast.error(msg, details);
   }
 
+  getReports() {
+    this.spinner.show();
+    const user: any = localStorage.getItem('user');
+    const email = JSON.parse(user)?.email;
+    this.reportService.getReports({ email }).subscribe({
+      next: (data: any) => {
+        this.reportsData = data?.data;
+        this.filteredReports = [...this.reportsData];
+        this.showSuccess({ msg: 'Success', details: data?.message });
+        this.spinner.hide();
+      }
+    })
+  }
+
+  refreshData() {
+    this.getReports();
+  }
 }
