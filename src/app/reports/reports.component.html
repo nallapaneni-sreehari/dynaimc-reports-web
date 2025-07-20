@@ -2,9 +2,15 @@
 <div class="p-4">
   <div class="flex justify-between items-center mb-4">
     <h2 class="text-2xl font-semibold">Reports</h2>
-    <div class="flex justify-between gap-2 items-center">
+    <div class="hidden md:flex justify-between gap-2 items-center">
       <p-button type="button" label="Integrate with API" icon="pi pi-code" severity="info" />
       <p-button type="button" label="Generate Report" icon="pi pi-plus" (click)="openGenerateDialog()" />
+    </div>
+
+    <!-- Mobile view -->
+    <div class="block md:hidden flex justify-between gap-2 items-center">
+      <p-button type="button" icon="pi pi-code" severity="info" />
+      <p-button type="button" icon="pi pi-plus" (click)="openGenerateDialog()" />
     </div>
   </div>
 
