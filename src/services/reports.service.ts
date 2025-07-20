@@ -20,4 +20,9 @@ export class ReportService {
     const url = environment.apiUrl + ENDPOINTS.generateAndDownload;
     return this.http.post(url, params, options);
   }
+
+  getReports(params: any) {
+    const url = environment.apiUrl + ENDPOINTS.getReports + `/${params?.email}`;
+    return this.http.get(url, params);
+  }
 }
