@@ -31,7 +31,7 @@ jobs:
 
             echo "🧹 Shutting down old containers"
             cd /root/reportsforge
-            docker compose down --volumes --remove-orphans
+            docker compose down
 
             echo "🔨 Rebuilding and restarting containers"
             docker compose up --build --force-recreate -d
