@@ -404,6 +404,9 @@ export class ReportsComponent implements OnInit {
         this.filteredReports = [...this.reportsData];
         this.showSuccess({ msg: 'Success', details: data?.message });
         this.spinner.hide();
+      },
+      error: (_err)=>{
+        this.spinner.hide();
       }
     })
   }
