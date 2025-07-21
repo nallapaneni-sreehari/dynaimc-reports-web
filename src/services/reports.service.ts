@@ -27,9 +27,9 @@ export class ReportService {
     return this.http.get(url, params);
   }
 
-  getSignedUrl(params: {bucket: string, key: string}) {
+  getSignedUrl(params: { bucket: string, key: string, env: string }) {
     // ?bucket=${bucket}&key=${key}
-    const url = environment.apiUrl + ENDPOINTS.downloadReport + `?bucket=${params?.bucket}&key=${params?.key}`;
+    const url = environment.apiUrl + ENDPOINTS.downloadReport + `?bucket=${params?.bucket}&key=${params?.key}&env=${params?.env}`;
     return this.http.get(url);
   }
 }
