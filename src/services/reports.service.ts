@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ENDPOINTS } from '../constants/constants';
 import { environment } from '../environments/environment';
 import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'fabric';
 
 @Injectable({ providedIn: 'root' })
 export class ReportService {
@@ -27,9 +28,10 @@ export class ReportService {
     return this.http.get(url, params);
   }
 
-  getSignedUrl(params: { bucket: string, key: string, env: string }) {
-    // ?bucket=${bucket}&key=${key}
-    const url = environment.apiUrl + ENDPOINTS.downloadReport + `?bucket=${params?.bucket}&key=${params?.key}&env=${params?.env}`;
-    return this.http.get(url);
+  downloadFile(params: { bucket: string, key: string, env: string }) {
+    const url = `${environment.apiUrl}${ENDPOINTS.downloadReport}?bucket=${params.bucket}&key=${params.key}&env=${params.env}`;
+    return this.http.get(url, { responseType: 'arraybuffer' });
   }
+
+
 }
