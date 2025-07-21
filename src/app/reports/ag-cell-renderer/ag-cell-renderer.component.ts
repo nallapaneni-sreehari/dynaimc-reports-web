@@ -39,6 +39,7 @@ export class AgCellRendererComponent implements ICellRendererAngularComp {
       next: (res: any) => {
         const a = document.createElement('a');
         if (type === 'preview') {
+          if (res?.data?.includes('minio')) { res.data = res?.data?.replace('minio', 'reportsforge'); }
           this.rs.showFilePreviewBS.next({ show: true, url: res?.data, filename: this.params?.data?.filename });
           return;
         }
