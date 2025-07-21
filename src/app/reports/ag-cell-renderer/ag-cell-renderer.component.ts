@@ -10,6 +10,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { ToastService } from '../../../services/toast.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-ag-cell-renderer',
@@ -34,12 +35,11 @@ export class AgCellRendererComponent implements ICellRendererAngularComp {
   }
 
   downloadFile(type: string) {
-    const params = { bucket: this.params?.data?.bucket, key: this.params?.data?.filename }
+    const params = { bucket: this.params?.data?.bucket, key: this.params?.data?.filename, env: environment.production ? 'prod' : 'dev' };
     this.rs.getSignedUrl(params).subscribe({
       next: (res: any) => {
         const a = document.createElement('a');
         if (type === 'preview') {
-          if (res?.data?.includes('minio')) { res.data = res?.data?.replace('minio', 'reportsforge'); }
           this.rs.showFilePreviewBS.next({ show: true, url: res?.data, filename: this.params?.data?.filename });
           return;
         }
