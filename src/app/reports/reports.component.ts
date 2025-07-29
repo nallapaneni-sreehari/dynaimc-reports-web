@@ -7,7 +7,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
 import { AgGridAngular } from 'ag-grid-angular';
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { TabViewModule } from 'primeng/tabview';
 import { TextareaModule } from 'primeng/textarea';
 import { TemplateService } from '../../services/templates.service';
@@ -32,13 +32,14 @@ import { AgCellRendererComponent } from './ag-cell-renderer/ag-cell-renderer.com
 import { ToggleButton } from 'primeng/togglebutton';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { sampleJson } from '../../constants/constants';
+import { ConfirmationDilogComponent } from '../confirmation-dilog/confirmation-dilog.component';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule, AgGridModule, ButtonModule, DialogModule, DropdownModule, FileUploadModule, TabViewModule, TextareaModule, SplitterModule, JsonEditorComponent, ReactiveFormsModule, ToggleButton, NgxExtendedPdfViewerModule],
+  imports: [CommonModule, FormsModule, AgGridModule, ButtonModule, DialogModule, DropdownModule, FileUploadModule, TabViewModule, TextareaModule, SplitterModule, JsonEditorComponent, ReactiveFormsModule, ToggleButton, NgxExtendedPdfViewerModule, ConfirmationDilogComponent],
   templateUrl: './reports.component.html',
-  styleUrl: './reports.component.css'
+  styleUrl: './reports.component.css',
 })
 export class ReportsComponent implements OnInit {
   previewChecked: boolean = false;
@@ -57,12 +58,13 @@ export class ReportsComponent implements OnInit {
   showFilePreview: boolean = false;
   filePreviewUrl: any = '';
   previewFileName: any = '';
+  gridApi!: GridApi;
 
   constructor(
     private templateService: TemplateService,
     private reportService: ReportService,
     private sanitize: DomSanitizer,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
   ) {
     this.editorOptions = new JsonEditorOptions()
     this.editorOptions.modes = ['text', 'tree', 'view'];
@@ -254,6 +256,10 @@ export class ReportsComponent implements OnInit {
     }
   }
 
+  onGridReady(params: GridReadyEvent){
+    this.gridApi = params?.api;
+  }
+
   @ViewChild('docxContainer', { static: false }) docxContainer!: ElementRef;
   async previewFile(url: string) {
     this.previewLoading = true;
@@ -380,10 +386,10 @@ export class ReportsComponent implements OnInit {
   }
 
   public toast = inject(ToastService);
-  showSuccess({ msg, details }: any) {
+  showSuccess({ msg, details }: { msg: string, details: string }) {
     this.toast.success(msg, details);
   }
-  showError({ msg, details }: any) {
+  showError({ msg, details }: {msg: string, details: string}) {
     this.toast.error(msg, details);
   }
 
@@ -413,7 +419,12 @@ export class ReportsComponent implements OnInit {
     this.selectedRows = event.api.getSelectedRows();
   }
 
-  deleteSelected(){
+  deleteSelected() {
+    this.toast.showDialog.next({ header: 'Are you sure ?', msg: 'Selected report(s) will be deleted permenently.', handler: this.deleteHandler.bind(this) });
+  }
 
+  deleteHandler(){
+    const nodes = this.gridApi.getSelectedNodes().map(node => node.data);
+    console.log('Delete:::', nodes);
   }
 }

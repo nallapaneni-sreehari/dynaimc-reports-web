@@ -12,13 +12,15 @@
       <ng-template #start>
         <div class="flex justify-between items-center md:gap-10">
           <div class="flex items-center">
-            <a href="#">
-              <span class="flex flex-row justify-center items-center gap-1 font-bold tracking-wider">
-                <!-- <img src="../assets/logo2.png" alt="logo" height="40px"> -->
-                <img src="../assets/logo_rf.png" alt="logo" class="w-12 h-6">
-                <p class="hidden sm:block text-xl text-emerald-600">ReportsForge</p>
-              </span>
-            </a>
+            <p-button raised outlined>
+              <a href="#">
+                <span class="flex flex-row justify-center items-center gap-1 font-bold tracking-wider">
+                  <!-- <img src="../assets/logo2.png" alt="logo" height="40px"> -->
+                  <img src="../assets/logo_rf.png" alt="logo" class="w-12 h-6">
+                  <p class="hidden sm:block text-xs">ReportsForge</p>
+                </span>
+              </a>
+            </p-button>
           </div>
 
           <!-- Desktop Menu (hidden on small) -->
@@ -31,7 +33,7 @@
           </div>
 
           <!-- Mobile Menu Toggle (hidden on md and up) -->
-          <div *ngIf="auth?.isLoggedIn"  class="lg:hidden">
+          <div *ngIf="auth?.isLoggedIn" class="lg:hidden">
             <p-button icon="pi pi-bars" text (click)="mobileMenu?.toggle($event)" />
             <p-menu #mobileMenu [model]="mobileMenuItems" popup />
           </div>
@@ -41,7 +43,7 @@
 
       <ng-template #end>
         <div *ngIf="userInfo?.email" class="flex gap-2 items-center">
-          <p-button icon="pi pi-question-circle" raised text aria-label="Help" />
+          <p-button icon="pi pi-question-circle" raised text aria-label="Help" (click)="openHelp=!openHelp" />
           <p-button (click)="toggleDarkMode()" [icon]="isDark ? 'pi pi-sun': 'pi pi-moon'" outlined text raised />
           <!-- Notification Bell with Badge -->
           <div class="relative inline-block">
@@ -93,7 +95,7 @@
 </p-drawer>
 
 
-<!-- Overlay Panel -->
+<!-- Overlay Panel For Notifications-->
 <p-overlayPanel #op [showCloseIcon]="true" styleClass="w-96 shadow-lg rounded-xl overflow-hidden dark:bg-gray-800">
   <div class="p-4 space-y-4">
 
@@ -111,7 +113,7 @@
       <div *ngFor="let notif of notifications; let i = index"
         class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex justify-between items-start gap-3 bg-white dark:bg-gray-900">
         <div class="flex items-start gap-3">
-          <i [ngClass]="getIconClass(notif.title)"  class="text-xl text-primary-500 mt-1"></i>
+          <i [ngClass]="getIconClass(notif.title)" class="text-xl text-primary-500 mt-1"></i>
           <div>
             <div class="font-semibold text-sm">{{ notif.title }}</div>
             <div class="text-xs text-gray-500 dark:text-gray-400">{{ getRelativeTime(notif.created_at) }}</div>
@@ -140,3 +142,54 @@
 
   </div>
 </p-overlayPanel>
+
+<!-- Help Drawer Panel -->
+<p-drawer header="Help & Support" [(visible)]="openHelp" position="right" [modal]="false"
+  styleClass="md:!w-[500px] surface-overlay border-left-1 surface-border" [baseZIndex]="10000">
+
+  <!-- Search Bar -->
+  <div class="mb-4">
+    <p-inputgroup>
+      <input pInputText type="text" placeholder="Search help articles..." [(ngModel)]="searchQuery" class="w-full" />
+      <p-inputgroup-addon>
+        <i class="pi pi-search text-color-secondary"></i>
+      </p-inputgroup-addon>
+    </p-inputgroup>
+  </div>
+
+  <!-- Help Articles -->
+  <div *ngFor="let article of filteredArticles()" class="mb-3">
+    <div class="p-3 card border-round-lg border-1 border transition-colors transition-duration-200 hover:hover">
+      <div class="flex justify-between items-start mb-2">
+        <div class="flex items-center gap-2">
+          <i class="pi pi-book text-primary text-md"></i>
+          <span class="font-semibold text-color text-md">{{ article.title }}</span>
+        </div>
+        <span class="flex text-xs text-color-secondary whitespace-nowrap">
+          <i class="text-xs pi pi-clock mr-1"></i>
+          <p>{{ article.readTime > 1 ? article.readTime + ' Mins' : article.readTime + ' Min' }}</p>
+        </span>
+      </div>
+
+      <div class="text-sm text-color mb-2">
+        {{ article.content }}
+      </div>
+
+      <div class="flex justify-between items-center text-xs text-color-secondary">
+        <a [href]="article.link" target="_blank" class="flex font-semibold text-primary hover:underline text-indigo-500">
+          <i class="pi pi-external-link mr-1"></i>
+          <p class="text-sm">Read Docs</p>
+        </a>
+        <div class="flex gap-3">
+          <span><i class="pi pi-eye mr-1"></i>{{ article.views }}</span>
+          <span><i class="pi pi-thumbs-up mr-1"></i>{{ article.likes }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load More -->
+  <div class="mt-4 text-center">
+    <p-button label="Show more articles" icon="pi pi-angle-down" severity="secondary" text />
+  </div>
+</p-drawer>
