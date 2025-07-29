@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -7,6 +8,7 @@ import { MessageService } from 'primeng/api';
 export class ToastService {
     constructor(private messageService: MessageService) { }
 
+    public showDialog: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     success(summary: string, detail: string, life = 3000) {
         this.messageService.add({ severity: 'success', summary, detail, life });
     }

@@ -35,19 +35,33 @@ export class AgCellRendererComponent implements ICellRendererAngularComp {
   }
 
   downloadFile(type: string) {
-    const params = { bucket: this.params?.data?.bucket, key: this.params?.data?.filename, env: environment.production ? 'prod' : 'dev' };
-    this.rs.getSignedUrl(params).subscribe({
-      next: (res: any) => {
-        const a = document.createElement('a');
+    const params = {
+      bucket: this.params?.data?.bucket,
+      key: this.params?.data?.filename,
+      env: environment.production ? 'prod' : 'dev'
+    };
+
+    this.rs.downloadFile(params).subscribe({
+      next: (res: ArrayBuffer) => {
+        const blob = new Blob([res]);
         if (type === 'preview') {
-          this.rs.showFilePreviewBS.next({ show: true, url: res?.data, filename: this.params?.data?.filename });
+          const blobUrl = URL.createObjectURL(blob);
+          this.rs.showFilePreviewBS.next({
+            show: true,
+            url: blobUrl,
+            filename: this.params?.data?.filename
+          });
           return;
         }
-        a.href = res.data;
-        a.download = this.params?.data?.filename; // or custom name
+
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = this.params?.data?.filename;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
       },
       error: (err) => {
         console.error('Download error:', err);

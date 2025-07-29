@@ -33,7 +33,12 @@ export class TemplatesComponent {
   ngOnInit(): void {
     // Directly open the template file if user selected edit template from reports page
     const getTemplateToOpen: any = localStorage.getItem('openTemplate');
-    const fileId = JSON.parse(getTemplateToOpen ?? '')?.fileId;
+    let fileId;
+    try {
+      fileId = JSON.parse(getTemplateToOpen ?? '')?.fileId;
+    } catch (_err) {
+      fileId = '';
+    }
     console.info(`fileId ::: `, fileId);
     this.embedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.nextcloudUrl);
     if (fileId) {
