@@ -8,11 +8,15 @@ import { CardModule } from 'primeng/card';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { ToastService } from '../../services/toast.service';
-
+import { PanelModule } from 'primeng/panel';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { Accordion, AccordionTab } from 'primeng/accordion';
+import { TableModule } from 'primeng/table';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ButtonModule, CardModule],
+  imports: [CommonModule, ButtonModule, CardModule, PanelModule, InputSwitchModule, AccordionTab, Accordion, TableModule, ReactiveFormsModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   standalone: true
@@ -81,4 +85,13 @@ export class LoginComponent {
     this.toast.success(msg, details);
   }
 
+  yearly = false;
+
+featureComparison = [
+  { feature: 'Word-like Editor', reportsForge: '✔️', rfClass: 'text-green-400 font-bold', traditionalApps: '❌', taClass: 'text-red-400' },
+  { feature: 'Bulk Generation', reportsForge: '✔️', rfClass: 'text-green-400 font-bold', traditionalApps: 'Limited', taClass: '' },
+  { feature: 'Scheduling', reportsForge: '✔️', rfClass: 'text-green-400 font-bold', traditionalApps: 'Manual', taClass: '' },
+  { feature: 'Email Alerts', reportsForge: '✔️', rfClass: 'text-green-400 font-bold', traditionalApps: 'Manual', taClass: '' },
+  { feature: 'Data Import', reportsForge: '✔️', rfClass: 'text-green-400 font-bold', traditionalApps: 'Limited', taClass: '' }
+];
 }

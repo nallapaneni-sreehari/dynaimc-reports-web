@@ -1,53 +1,121 @@
-<!-- <div class="flex flex-col justify-start items-center gap-4">
-    <button class="border border-gray-400 px-5 py-6 hover:bg-blue-500 transition duration-200" (click)="login()">
-        Login
-    </button>
-
-    <button class="border border-gray-400 px-5 py-6 hover:bg-red-500" (click)="logout()">Logout</button>
-
-    <pre *ngIf="auth.identityClaims">{{ auth.identityClaims | json }}</pre>
-</div> -->
-
-
 <div *ngIf="!auth?.isLoggedIn"
-    class="grid grid-cols-12 gap-4 grid-nogutter bg-surface-0 dark:bg-surface-950 text-surface-800 dark:text-surface-50">
-    <div class="col-span-12 md:col-span-6 p-12 text-center md:text-left flex items-center ">
-        <section class="">
-            <div class="typewriter-container !mb-2 ">
-                <h2 class="!py-2 !block !font-bold text-3xl xl:!text-4xl !text-primary-400">{{ displayText }}</h2>
-            </div>
-            <div class="w-full flex flex-col gap-6">
-                <div class="text-2xl lg:text-3xl text-primary font-semibold mb-4 !text-gray-600">Design Your report templates, and schedule
-                    the batches to Forge them</div>
-                <div class="border-l-8 border-emerald-600 bg-emerald-50 dark:border-emerald-50 dark:bg-emerald-600 p-4 rounded-md shadow-sm mb-2">
-                    <div class="flex items-start space-x-3">
-                        <!-- <i class="pi pi-info-circle ext-xl mt-1"></i> -->
-                        <div>
-                            <p class="text-base font-semibold">
-                                Create and manage dynamic reports with ease.
-                            </p>
-                            <p class="text-sm">
-                                Import data, design templates, and generate polished PDFs instantly.
-                            </p>
-                        </div>
-                    </div>
+    class="min-h-screen bg-gradient-to-br from-surface-950 via-surface-900 to-surface-950 text-surface-50 flex flex-col items-center justify-start">
+
+    <!-- Hero Section -->
+    <section class="w-full max-w-4xl mx-auto text-center py-16 animate-fade-in">
+        <h1 class="text-5xl font-extrabold text-primary-400 mb-4">Custom Reports, Zero Coding.</h1>
+        <p class="text-xl text-surface-200 mb-8">Design dynamic report templates with a Word-like UI. Generate,
+            schedule, and deliver hundreds of reports from your data—no code required.</p>
+        <div class="flex justify-center gap-4 mb-8">
+            <p-button label="Get Started Free" severity="primary" class="animate-pulse px-8 py-3 text-lg" raised
+                (click)="login()"></p-button>
+            <p-button label="Learn More" outlined class="px-8 py-3 text-lg"></p-button>
+        </div>
+        <video autoplay loop muted playsinline class="rounded-xl shadow-lg w-full max-w-2xl mx-auto animate-fade-in"
+            src="https://videos.pexels.com/video-files/5752729/5752729-uhd_2560_1440_30fps.mp4"></video>
+    </section>
+    <!-- Feature Cards -->
+    <section class="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 py-12">
+        <p-panel header="Word-like Designer"
+            class="bg-surface-900/80 text-surface-50 shadow-2xl border border-primary-700 transition-transform hover:scale-105 duration-300 animate-fade-in">
+            <div class="flex flex-col items-center gap-4 py-6">
+                <div class="bg-primary-900/80 rounded-full p-4 shadow-lg animate-bounce">
+                    <i class="pi pi-file-edit text-primary-400 text-4xl"></i>
                 </div>
-
-
-
-                <div>
-                    <p-button label="Get Started" severity="primary" type="button" class="mr-4" raised
-                        (click)="login()"></p-button>
-                    <p-button label="Learn More" type="button" outlined></p-button>
-                </div>
+                <span class="text-lg font-semibold text-primary-300 text-center">Design templates visually,<br> just
+                    like MS Word.</span>
+                <span class="text-xs text-surface-300 text-center">Intuitive drag-and-drop editor with rich
+                    formatting.</span>
             </div>
-        </section>
-    </div>
-    <div class="col-span-12 lg:col-span-6 overflow-hidden">
-        <video controls class="hidden md:ml-auto lg:block lg:h-full" style="clip-path: polygon(10% 0, 100% 0%, 100% 100%, 0 100%)" src="https://videos.pexels.com/video-files/5752729/5752729-uhd_2560_1440_30fps.mp4"></video>
-        <video controls class="lg:hidden md:ml-auto block lg:h-full" src="https://videos.pexels.com/video-files/5752729/5752729-uhd_2560_1440_30fps.mp4"></video>
-        
-        <!-- <img src="https://apollo.primeng.org/demo/images/blocks/hero/hero-1.png" alt="Image"
-            class="md:ml-auto block md:h-full" style="clip-path: polygon(8% 0, 100% 0%, 100% 100%, 0 100%)"> -->
-    </div>
+        </p-panel>
+        <p-panel header="Bulk Generation"
+            class="bg-surface-900/80 text-surface-50 shadow-2xl border border-primary-700 transition-transform hover:scale-105 duration-300 animate-fade-in-delay">
+            <div class="flex flex-col items-center gap-4 py-6">
+                <div class="bg-primary-900/80 rounded-full p-4 shadow-lg animate-spin-slow">
+                    <i class="pi pi-database text-primary-400 text-4xl"></i>
+                </div>
+                <span class="text-lg font-semibold text-primary-300 text-center">Generate hundreds or thousands<br> of
+                    reports from JSON/CSV data.</span>
+                <span class="text-xs text-surface-300 text-center">Import your data and let ReportsForge do the
+                    rest.</span>
+            </div>
+        </p-panel>
+        <p-panel header="Automated Scheduling"
+            class="bg-surface-900/80 text-surface-50 shadow-2xl border border-primary-700 transition-transform hover:scale-105 duration-300 animate-fade-in-delay">
+            <div class="flex flex-col items-center gap-4 py-6">
+                <div class="bg-primary-900/80 rounded-full p-4 shadow-lg animate-pulse">
+                    <i class="pi pi-calendar text-primary-400 text-4xl"></i>
+                </div>
+                <span class="text-lg font-semibold text-primary-300 text-center">Schedule bulk report batches<br> and
+                    get email notifications.</span>
+                <span class="text-xs text-surface-300 text-center">Automate delivery and stay informed instantly.</span>
+            </div>
+        </p-panel>
+    </section>
+
+    <!-- Feature Comparison Table -->
+    <section class="w-full max-w-5xl mx-auto py-12 animate-fade-in-delay">
+        <h2 class="text-3xl font-bold text-primary-400 mb-6 text-center">Feature Comparison</h2>
+        <p-table [value]="featureComparison" class="bg-surface-900/80 rounded-xl shadow-lg text-sm">
+            <ng-template pTemplate="header">
+                <tr class="bg-primary-900 text-primary-200">
+                    <th class="py-3 px-4">Feature</th>
+                    <th class="py-3 px-4">ReportsForge</th>
+                    <th class="py-3 px-4">Traditional Apps</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row>
+                <tr>
+                    <td class="py-2 px-4">{{ row.feature }}</td>
+                    <td class="py-2 px-4" [ngClass]="row.rfClass">{{ row.reportsForge }}</td>
+                    <td class="py-2 px-4" [ngClass]="row.taClass">{{ row.traditionalApps }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </section>
+    <!-- FAQ Section with PrimeNG Accordion -->
+    <section class="w-full max-w-4xl mx-auto py-12 animate-fade-in-delay">
+        <h2 class="text-2xl font-bold text-primary-400 mb-6">Frequently Asked Questions</h2>
+        <p-accordion [multiple]="true" class="bg-surface-900/80 text-surface-50 rounded-xl shadow-lg">
+            <p-accordionTab header="What is ReportsForge?">
+                <span>ReportsForge lets you design, generate, and automate reports with zero coding.</span>
+            </p-accordionTab>
+            <p-accordionTab header="Do I need coding skills?">
+                <span>No, ReportsForge is designed for everyone. Just use our Word-like editor.</span>
+            </p-accordionTab>
+            <p-accordionTab header="Can I automate report delivery?">
+                <span>Yes, schedule bulk reports and get email notifications automatically.</span>
+            </p-accordionTab>
+            <p-accordionTab header="What data formats are supported?">
+                <span>Import JSON or CSV data for bulk report generation.</span>
+            </p-accordionTab>
+            <p-accordionTab header="Is there a free trial?">
+                <span>Yes, you can start designing and generating reports for free. No credit card required.</span>
+            </p-accordionTab>
+        </p-accordion>
+    </section>
+    <!-- Call to Action -->
+    <section class="w-full max-w-3xl mx-auto py-12">
+        <div class="rounded-2xl bg-gradient-to-r from-primary-700 to-primary-400 text-center py-12 px-6 shadow-xl">
+            <h2 class="text-3xl font-bold mb-4">Start Generating Reports Instantly</h2>
+            <p class="text-lg mb-6">No credit card required. Design your first report in minutes.</p>
+            <p-button label="Try ReportsForge Free" severity="success" class="px-8 py-3 text-lg" raised
+                (click)="login()"></p-button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full bg-surface-950 py-8 mt-8 text-surface-200 text-center text-sm">
+        <div class="flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto gap-4">
+            <div>
+                <span class="font-bold text-primary-400">ReportsForge</span> &copy; 2025
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-primary-400">Docs</a>
+                <a href="#" class="hover:text-primary-400">Support</a>
+                <a href="#" class="hover:text-primary-400">Terms</a>
+                <a href="#" class="hover:text-primary-400">Privacy</a>
+            </div>
+        </div>
+    </footer>
 </div>
